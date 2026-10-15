@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Minsu Kim</title>
+  <meta name="description" content="Software Engineer — 프로젝트, 수상, 학력, 자격증" />
+  <meta property="og:title" content="Minsu Kim" />
+  <meta property="og:description" content="Software Engineer — 프로젝트, 수상, 학력, 자격증" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#top" class="nav-logo" id="navName"></a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#awards">Awards</a>
+        <a href="#education">Education</a>
+        <a href="#certs">Certifications</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="theme-btn" id="themeBtn" aria-label="테마 전환">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="avatar reveal" id="avatar"></div>
+      <p class="eyebrow reveal" id="role"></p>
+      <h1 class="hero-title reveal" id="tagline"></h1>
+      <p class="hero-sub reveal" id="intro"></p>
+      <div class="hero-links reveal" id="heroLinks"></div>
+      <div class="stats reveal" id="stats"></div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section alt" id="projects">
+      <div class="container">
+        <h2 class="section-title reveal">Projects.<span> 직접 만든 것들.</span></h2>
+      </div>
+      <div class="carousel" id="projectList"></div>
+      <div class="container carousel-ctrl">
+        <button class="circle-btn" data-dir="-1" aria-label="이전">‹</button>
+        <button class="circle-btn" data-dir="1" aria-label="다음">›</button>
+      </div>
+    </section>
+
+    <!-- AWARDS -->
+    <section class="section" id="awards">
+      <div class="container">
+        <h2 class="section-title reveal">Awards.<span> 인정받은 순간들.</span></h2>
+        <div class="award-grid" id="awardList"></div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="section alt" id="education">
+      <div class="container">
+        <h2 class="section-title reveal">Education.<span> 배움의 궤적.</span></h2>
+        <div class="timeline" id="eduList"></div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section class="section" id="certs">
+      <div class="container">
+        <h2 class="section-title reveal">Certifications.<span> 검증된 역량.</span></h2>
+        <div class="cert-grid" id="certList"></div>
+        <h3 class="sub-title reveal">Skills</h3>
+        <div class="chips reveal" id="skillList"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact">
+      <div class="container center">
+        <h2 class="contact-title reveal">함께 만들어요.</h2>
+        <p class="hero-sub reveal">새로운 기회나 협업 제안은 언제든 환영입니다.</p>
+        <a class="btn-primary reveal" id="mailBtn" href="#">이메일 보내기</a>
+        <div class="contact-links reveal" id="contactLinks"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container" id="footer"></div>
+  </footer>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/main.js"></script>
+</body>
+</html>
