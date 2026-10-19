@@ -1,14 +1,13 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Minsu Kim</title>
-  <meta name="description" content="Software Engineer — 프로젝트, 수상, 학력, 자격증" />
-  <meta property="og:title" content="Minsu Kim" />
-  <meta property="og:description" content="Software Engineer — 프로젝트, 수상, 학력, 자격증" />
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <title>Minseo Kim</title>
+  <meta name="description" content="Minseo Kim — AI security researcher and founder of Nouri. Experience, research, awards and projects." />
+  <meta property="og:title" content="Minseo Kim" />
+  <meta property="og:description" content="Minseo Kim — AI security researcher and founder of Nouri. Experience, research, awards and projects." />
+  <meta name="theme-color" content="#000000" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
   <link rel="stylesheet" href="assets/style.css" />
@@ -18,15 +17,24 @@
     <div class="nav-inner">
       <a href="#top" class="nav-logo" id="navName"></a>
       <div class="nav-links">
-        <a href="#projects">Projects</a>
-        <a href="#awards">Awards</a>
-        <a href="#education">Education</a>
-        <a href="#certs">Certifications</a>
-        <a href="#contact">Contact</a>
+        <a href="#projects" data-i18n="nav.projects">Projects</a>
+        <a href="#experience" data-i18n="nav.experience">Experience</a>
+        <a href="#awards" data-i18n="nav.awards">Awards</a>
+        <a href="#education" data-i18n="nav.education">Education</a>
+        <a href="#research" data-i18n="nav.research">Research</a>
+        <a href="#certs" data-i18n="nav.certs">Certifications</a>
+        <a href="#archive" data-i18n="nav.archive">Archive</a>
+        <a href="#contact" data-i18n="nav.contact">Contact</a>
       </div>
-      <button class="theme-btn" id="themeBtn" aria-label="테마 전환">
-        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
-      </button>
+      <div class="nav-tools">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="ko" aria-pressed="false">KR</button>
+        </div>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -44,47 +52,74 @@
     <!-- PROJECTS -->
     <section class="section alt" id="projects">
       <div class="container">
-        <h2 class="section-title reveal">Projects.<span> 직접 만든 것들.</span></h2>
+        <h2 class="section-title reveal"><span data-i18n="projects.title">Projects.</span><span class="muted" data-i18n="projects.sub"> Things I've built.</span></h2>
       </div>
       <div class="carousel" id="projectList"></div>
       <div class="container carousel-ctrl">
-        <button class="circle-btn" data-dir="-1" aria-label="이전">‹</button>
-        <button class="circle-btn" data-dir="1" aria-label="다음">›</button>
+        <button class="circle-btn" data-dir="-1" aria-label="Previous">‹</button>
+        <button class="circle-btn" data-dir="1" aria-label="Next">›</button>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section" id="experience">
+      <div class="container">
+        <h2 class="section-title reveal"><span data-i18n="experience.title">Experience.</span><span class="muted" data-i18n="experience.sub"> Where I've worked.</span></h2>
+        <div class="timeline" id="expList"></div>
       </div>
     </section>
 
     <!-- AWARDS -->
-    <section class="section" id="awards">
+    <section class="section alt" id="awards">
       <div class="container">
-        <h2 class="section-title reveal">Awards.<span> 인정받은 순간들.</span></h2>
+        <h2 class="section-title reveal"><span data-i18n="awards.title">Awards.</span><span class="muted" data-i18n="awards.sub"> Moments of recognition.</span></h2>
         <div class="award-grid" id="awardList"></div>
       </div>
     </section>
 
     <!-- EDUCATION -->
-    <section class="section alt" id="education">
+    <section class="section" id="education">
       <div class="container">
-        <h2 class="section-title reveal">Education.<span> 배움의 궤적.</span></h2>
+        <h2 class="section-title reveal"><span data-i18n="education.title">Education.</span><span class="muted" data-i18n="education.sub"> Where I learned.</span></h2>
         <div class="timeline" id="eduList"></div>
+      </div>
+    </section>
+
+    <!-- RESEARCH -->
+    <section class="section alt" id="research">
+      <div class="container">
+        <h2 class="section-title reveal"><span data-i18n="research.title">Research.</span><span class="muted" data-i18n="research.sub"> Publications &amp; patents.</span></h2>
+        <div class="research-list" id="researchList"></div>
       </div>
     </section>
 
     <!-- CERTIFICATIONS -->
     <section class="section" id="certs">
       <div class="container">
-        <h2 class="section-title reveal">Certifications.<span> 검증된 역량.</span></h2>
+        <h2 class="section-title reveal"><span data-i18n="certs.title">Certifications.</span><span class="muted" data-i18n="certs.sub"> Programs &amp; credentials.</span></h2>
         <div class="cert-grid" id="certList"></div>
-        <h3 class="sub-title reveal">Skills</h3>
+        <h3 class="sub-title reveal" data-i18n="skills.title">Skills</h3>
         <div class="chips reveal" id="skillList"></div>
+      </div>
+    </section>
+
+    <!-- ARCHIVE -->
+    <section class="section alt" id="archive">
+      <div class="container">
+        <h2 class="section-title reveal"><span data-i18n="archive.title">Archive.</span><span class="muted" data-i18n="archive.sub"> Everything, in order.</span></h2>
+        <div class="archive">
+          <aside class="archive-tabs" id="archiveTabs" role="tablist"></aside>
+          <div class="archive-feed" id="archiveFeed"></div>
+        </div>
       </div>
     </section>
 
     <!-- CONTACT -->
     <section class="section contact" id="contact">
       <div class="container center">
-        <h2 class="contact-title reveal">함께 만들어요.</h2>
-        <p class="hero-sub reveal">새로운 기회나 협업 제안은 언제든 환영입니다.</p>
-        <a class="btn-primary reveal" id="mailBtn" href="#">이메일 보내기</a>
+        <h2 class="contact-title reveal" data-i18n="contact.title">Let's build together.</h2>
+        <p class="hero-sub reveal" data-i18n="contact.sub">Always open to new opportunities and collaborations.</p>
+        <a class="btn-primary reveal" id="mailBtn" href="#" data-i18n="contact.mail">Send an email</a>
         <div class="contact-links reveal" id="contactLinks"></div>
       </div>
     </section>

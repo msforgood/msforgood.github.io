@@ -1,5 +1,7 @@
 (() => {
   const P = window.PROFILE;
+  const I18N = window.I18N;
+  const LANGS = ["en", "ko"];
   const $ = (id) => document.getElementById(id);
   const esc = (s = "") => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -11,99 +13,264 @@
     badge: '<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 15a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM8.21 13.89 7 23l5-3 5 3-1.21-9.12"/></svg>',
   };
   const AWARD_ICONS = ["🏆", "🥇", "🎖️", "🏅", "✨"];
+  const joinDot = (...xs) => xs.filter(Boolean).join(" · ");
   const ext = (url) => (url.startsWith("mailto:") ? "" : ' target="_blank" rel="noopener"');
 
-  // Basics
-  document.title = `${P.nameEn} — ${P.role}`;
-  $("navName").textContent = P.nameEn;
-  $("role").textContent = `${P.name} · ${P.role}`;
-  $("tagline").textContent = P.tagline;
-  $("intro").textContent = P.intro;
-  $("avatar").innerHTML = P.avatar
-    ? `<img src="${esc(P.avatar)}" alt="${esc(P.name)}">`
-    : esc(P.nameEn.split(" ").map((w) => w[0]).join(""));
+  // ── Language ──
+  let lang = "en";
+  try {
+    const q = new URLSearchParams(location.search).get("lang");
+    const saved = localStorage.getItem("lang");
+    if (LANGS.includes(q)) lang = q;
+    else if (LANGS.includes(saved)) lang = saved;
+  } catch {}
 
-  // Links
-  $("heroLinks").innerHTML = P.links
-    .map((l, i) => `<a class="pill${i === 0 ? " primary" : ""}" href="${esc(l.url)}"${ext(l.url)}>${ICONS[l.icon] || ""}${esc(l.label)}</a>`)
-    .join("");
-  const mail = P.links.find((l) => l.url.startsWith("mailto:"));
-  if (mail) $("mailBtn").href = mail.url; else $("mailBtn").remove();
-  $("contactLinks").innerHTML = P.links
-    .filter((l) => !l.url.startsWith("mailto:"))
-    .map((l) => `<a href="${esc(l.url)}"${ext(l.url)}>${esc(l.label)} ›</a>`)
-    .join("");
+  // { en, ko } 객체면 현재 언어, 문자열이면 그대로
+  const t = (v) => (v && typeof v === "object" ? v[lang] ?? v.en ?? "" : v ?? "");
+  const ui = (key) => I18N[lang]?.[key] ?? I18N.en[key] ?? "";
 
-  // Stats
-  const stats = P.stats || [
-    { num: P.projects.length, label: "Projects" },
-    { num: P.awards.length, label: "Awards" },
-    { num: P.certifications.length, label: "Certifications" },
-  ];
-  $("stats").innerHTML = stats
-    .map((s) => `<div><div class="stat-num" data-count="${s.num}">0</div><div class="stat-label">${esc(s.label)}</div></div>`)
-    .join("");
+  let revealed = false; // 첫 렌더 이후엔 애니메이션 없이 즉시 표시
 
-  // Projects
-  $("projectList").innerHTML = P.projects
-    .map((p) => {
-      const tag = p.link ? "a" : "div";
-      const href = p.link ? ` href="${esc(p.link)}" target="_blank" rel="noopener"` : "";
-      return `<${tag} class="project reveal" data-color="${esc(p.color || "blue")}"${href}>
-        <div class="project-meta">${esc(p.period)} · ${esc(p.role)}</div>
-        <h3>${esc(p.name)}</h3>
-        <p>${esc(p.summary)}</p>
-        <div class="tags">${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div>
-        ${p.link ? '<span class="go">↗</span>' : ""}
-      </${tag}>`;
-    })
-    .join("");
-  document.querySelectorAll(".carousel-ctrl .circle-btn").forEach((b) =>
-    b.addEventListener("click", () => {
-      const c = $("projectList");
-      const card = c.querySelector(".project");
-      c.scrollBy({ left: (card ? card.offsetWidth + 20 : 400) * Number(b.dataset.dir), behavior: "smooth" });
-    })
-  );
+  function render() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = ui(el.dataset.i18n)));
+    document.querySelectorAll(".lang-switch button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
 
-  // Awards
-  $("awardList").innerHTML = P.awards
-    .map((a, i) => `<div class="award reveal">
-        <div class="award-icon">${AWARD_ICONS[i % AWARD_ICONS.length]}</div>
-        <div class="award-date">${esc(a.date)}</div>
-        <div class="award-title">${esc(a.title)}</div>
-        <div class="award-org">${esc(a.org)}</div>
-        ${a.desc ? `<div class="award-desc">${esc(a.desc)}</div>` : ""}
-      </div>`)
-    .join("");
+    const name = t(P.name);
+    document.title = `${name} — ${t(P.role)}`;
+    $("navName").textContent = name;
+    $("role").textContent = lang === "en" ? t(P.role) : `${name} · ${t(P.role)}`;
+    $("tagline").textContent = t(P.tagline);
+    $("intro").textContent = t(P.intro);
+    $("avatar").innerHTML = P.avatar ? `<img src="${esc(P.avatar)}" alt="${esc(name)}">` : esc(P.initials);
 
-  // Education
-  $("eduList").innerHTML = P.education
-    .map((e) => `<div class="edu reveal">
-        <div class="edu-period">${esc(e.period)}</div>
-        <div class="edu-school">${esc(e.school)}</div>
-        <div class="edu-degree">${esc(e.degree)}</div>
-        ${e.detail ? `<div class="edu-detail">${esc(e.detail)}</div>` : ""}
-      </div>`)
-    .join("");
+    // Links
+    $("heroLinks").innerHTML = P.links
+      .map((l, i) => `<a class="pill${i === 0 ? " primary" : ""}" href="${esc(l.url)}"${ext(l.url)}>${ICONS[l.icon] || ""}${esc(t(l.label))}</a>`)
+      .join("");
+    const mail = P.links.find((l) => l.url.startsWith("mailto:"));
+    $("mailBtn").hidden = !mail;
+    if (mail) $("mailBtn").href = mail.url;
+    $("contactLinks").innerHTML = P.links
+      .filter((l) => !l.url.startsWith("mailto:"))
+      .map((l) => `<a href="${esc(l.url)}"${ext(l.url)}>${esc(t(l.label))} ›</a>`)
+      .join("");
 
-  // Certifications & skills
-  $("certList").innerHTML = P.certifications
-    .map((c) => `<div class="cert reveal">
-        <div class="cert-badge">${ICONS.badge}</div>
-        <div><div class="cert-name">${esc(c.name)}</div><div class="cert-issuer">${esc(c.issuer)} · ${esc(c.date)}</div></div>
-      </div>`)
-    .join("");
-  $("skillList").innerHTML = P.skills.map((s) => `<span class="tag">${esc(s)}</span>`).join("");
+    // Stats
+    const stats = P.stats || [
+      { num: P.projects.length, label: ui("stats.projects") },
+      { num: P.awards.length, label: ui("stats.awards") },
+      { num: (P.research || []).length, label: ui("stats.research") },
+    ];
+    $("stats").innerHTML = stats
+      .map((s) => `<div><div class="stat-num" data-count="${s.num}">${revealed ? s.num : 0}</div><div class="stat-label">${esc(t(s.label))}</div></div>`)
+      .join("");
 
-  $("footer").textContent = `© ${new Date().getFullYear()} ${P.nameEn}. ${P.location}`;
+    // Projects
+    $("projectList").innerHTML = P.projects
+      .map((p) => {
+        const tag = p.link ? "a" : "div";
+        const href = p.link ? ` href="${esc(p.link)}" target="_blank" rel="noopener"` : "";
+        return `<${tag} class="project reveal" data-color="${esc(p.color || "blue")}"${href}>
+          <div class="project-meta">${esc(joinDot(t(p.period), t(p.role)))}</div>
+          <h3>${esc(t(p.name))}</h3>
+          <p>${esc(t(p.summary))}</p>
+          <div class="tags">${(p.tags || []).map((x) => `<span class="tag">${esc(t(x))}</span>`).join("")}</div>
+          ${p.link ? '<span class="go">↗</span>' : ""}
+        </${tag}>`;
+      })
+      .join("");
 
-  // Reveal on scroll (+ count-up for stats)
+    // Awards
+    $("awardList").innerHTML = P.awards
+      .map((a, i) => `<div class="award reveal">
+          <div class="award-icon">${AWARD_ICONS[i % AWARD_ICONS.length]}</div>
+          <div class="award-date">${esc(t(a.date))}</div>
+          <div class="award-title">${esc(t(a.title))}</div>
+          <div class="award-org">${esc(t(a.org))}</div>
+          ${t(a.desc) ? `<div class="award-desc">${esc(t(a.desc))}</div>` : ""}
+        </div>`)
+      .join("");
+
+    // Experience
+    $("expList").innerHTML = (P.experience || [])
+      .map((e) => `<div class="edu reveal">
+          <div class="edu-period">${esc(t(e.period))}</div>
+          <div class="edu-school">${esc(t(e.org))}</div>
+          <div class="edu-degree">${esc(t(e.title))}</div>
+          ${t(e.location) || t(e.detail) ? `<div class="edu-detail">${esc(joinDot(t(e.location), t(e.detail)))}</div>` : ""}
+        </div>`)
+      .join("");
+
+    // Research
+    $("researchList").innerHTML = (P.research || [])
+      .map((r) => `<div class="r-row reveal">
+          <span class="r-type${r.type === "patent" ? " patent" : ""}">${esc(ui("research." + r.type))}</span>
+          <div class="r-body">
+            <div class="r-title">${esc(t(r.title))}</div>
+            ${t(r.venue) || r.date ? `<div class="r-meta">${esc(joinDot(t(r.venue), r.date))}</div>` : ""}
+          </div>
+        </div>`)
+      .join("");
+
+    // Education
+    $("eduList").innerHTML = P.education
+      .map((e) => `<div class="edu reveal">
+          <div class="edu-period">${esc(t(e.period))}</div>
+          <div class="edu-school">${esc(t(e.school))}</div>
+          <div class="edu-degree">${esc(t(e.degree))}</div>
+          ${t(e.detail) ? `<div class="edu-detail">${esc(t(e.detail))}</div>` : ""}
+        </div>`)
+      .join("");
+
+    // Certifications & skills
+    $("certList").innerHTML = P.certifications
+      .map((c) => `<div class="cert reveal">
+          <div class="cert-badge">${ICONS.badge}</div>
+          <div><div class="cert-name">${esc(t(c.name))}</div><div class="cert-issuer">${esc(joinDot(t(c.issuer), t(c.date)))}</div></div>
+        </div>`)
+      .join("");
+    $("skillList").innerHTML = P.skills.map((s) => `<span class="tag">${esc(t(s))}</span>`).join("");
+
+    $("footer").textContent = `© ${new Date().getFullYear()} ${name}. ${t(P.location)}`;
+
+    renderArchive();
+    observeReveals();
+  }
+
+  // ── Archive: 프로젝트·수상·자격증·활동을 월별 타임라인으로 ──
+  const TYPES = ["project", "career", "award", "research", "education", "cert", "activity"];
+  const TYPE_EMOJI = { project: "🚀", career: "💼", award: "🏆", research: "📄", education: "🎓", cert: "📜", activity: "✦" };
+  const CHEVRON = '<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>';
+  const ROWS_VISIBLE = 3;
+  let archiveFilter = "all";
+  const expanded = new Set();
+
+  const archiveEntries = () =>
+    [
+      ...P.projects.map((p) => ({ type: "project", date: p.date, title: p.name, org: p.role, desc: p.summary, image: p.image, link: p.link, color: p.color, tags: p.tags })),
+      ...(P.experience || []).map((e) => ({ type: "career", date: e.date, title: e.title, org: e.org, desc: e.period })),
+      ...P.awards.map((a) => ({ type: "award", ...a })),
+      ...(P.research || []).map((r) => ({ type: "research", date: r.date, title: r.title, org: ui("research." + r.type), desc: r.venue, link: r.link })),
+      ...P.education.map((e) => ({ type: "education", date: e.date, title: e.degree, org: e.school, desc: e.period })),
+      ...P.certifications.map((c) => ({ type: "cert", date: c.date, title: c.name, org: c.issuer, image: c.image, link: c.link })),
+      ...(P.archive || []),
+    ]
+      .filter((e) => e.date)
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+  function archiveCover(items, ym) {
+    const withImg = items.find((e) => e.image);
+    if (withImg) {
+      return `<div class="a-cover reveal"><img src="${esc(withImg.image)}" alt="${esc(t(withImg.title))}" loading="lazy"><div class="cap">${esc(t(withImg.title))}</div></div>`;
+    }
+    const proj = items.find((e) => e.type === "project");
+    if (proj) {
+      return `<div class="a-cover gen reveal" data-color="${esc(proj.color || "blue")}">
+        <div class="k">${esc(joinDot(ui("archive.project"), t(proj.org)))}</div>
+        <div class="big">${esc(t(proj.title))}</div>
+        <div class="small">${esc(t(proj.desc))}</div>
+      </div>`;
+    }
+    const award = items.find((e) => e.type === "award");
+    if (award) {
+      return `<div class="a-cover gen reveal" data-color="gold">
+        <div class="emoji">🏆</div>
+        <div class="k">${esc(joinDot(ui("archive.award"), t(award.org)))}</div>
+        <div class="big">${esc(t(award.title))}</div>
+        ${t(award.desc) ? `<div class="small">${esc(t(award.desc))}</div>` : ""}
+      </div>`;
+    }
+    const career = items.find((e) => e.type === "career");
+    if (career) {
+      return `<div class="a-cover gen reveal" data-color="blue">
+        <div class="emoji">💼</div>
+        <div class="k">${esc(ui("archive.career"))} · ${esc(t(career.desc))}</div>
+        <div class="big">${esc(t(career.org))}</div>
+        <div class="small">${esc(t(career.title))}</div>
+      </div>`;
+    }
+    const [y, m] = ym.split(".");
+    return `<div class="a-cover gen month reveal" data-color="purple">
+      <div class="k">${m ? esc(y) : ""}</div>
+      <div class="big">${esc(m || y)}</div>
+      <div class="small">${items.map((e) => esc(t(e.title))).join(" · ")}</div>
+    </div>`;
+  }
+
+  function archiveRow(e) {
+    const tag = e.link ? "a" : "div";
+    const href = e.link ? ` href="${esc(e.link)}"${ext(e.link)}` : "";
+    const thumb = e.image ? `<img src="${esc(e.image)}" alt="" loading="lazy">` : TYPE_EMOJI[e.type] || "•";
+    const meta = e.type === "project" && e.tags ? e.tags.map(t).join(" · ") : t(e.desc);
+    return `<${tag} class="a-row"${href}>
+      <div class="a-thumb">${thumb}<span class="badge">${esc(ui("archive." + e.type))}</span></div>
+      <div class="a-body">
+        <div class="a-org">${esc(t(e.org))}</div>
+        <div class="a-title">${esc(t(e.title))}</div>
+        <div class="a-desc"><b>${esc(e.date)}</b>${esc(meta)}</div>
+      </div>
+    </${tag}>`;
+  }
+
+  function renderArchive() {
+    const all = archiveEntries();
+    const count = (type) => (type === "all" ? all.length : all.filter((e) => e.type === type).length);
+    $("archiveTabs").innerHTML = ["all", ...TYPES]
+      .filter((type) => type === "all" || count(type))
+      .map((type) => `<button type="button" role="tab" class="a-tab" data-type="${type}" aria-selected="${type === archiveFilter}">${esc(ui("archive." + type))}<sup>${count(type)}</sup></button>`)
+      .join("");
+
+    const list = archiveFilter === "all" ? all : all.filter((e) => e.type === archiveFilter);
+    const groups = new Map();
+    list.forEach((e) => {
+      const ym = String(e.date).slice(0, 7);
+      if (!groups.has(ym)) groups.set(ym, []);
+      groups.get(ym).push(e);
+    });
+
+    $("archiveFeed").innerHTML = groups.size
+      ? [...groups]
+          .map(([ym, items]) => {
+            const open = expanded.has(ym);
+            const shown = open ? items : items.slice(0, ROWS_VISIBLE);
+            const hidden = items.length - ROWS_VISIBLE;
+            return `<div class="a-group">
+              ${archiveCover(items, ym)}
+              <div class="a-date">${esc(ym)}</div>
+              <div class="a-list">
+                ${shown.map(archiveRow).join("")}
+                ${hidden > 0 ? `<button type="button" class="a-more" data-ym="${esc(ym)}" aria-expanded="${open}">${esc(ui(open ? "archive.less" : "archive.more"))}${open ? "" : ` (${hidden}+)`}${CHEVRON}</button>` : ""}
+              </div>
+            </div>`;
+          })
+          .join("")
+      : `<div class="a-empty">${esc(ui("archive.empty"))}</div>`;
+  }
+
+  $("archiveTabs").addEventListener("click", (ev) => {
+    const b = ev.target.closest(".a-tab");
+    if (!b || b.dataset.type === archiveFilter) return;
+    archiveFilter = b.dataset.type;
+    renderArchive();
+    observeReveals();
+  });
+  $("archiveFeed").addEventListener("click", (ev) => {
+    const b = ev.target.closest(".a-more");
+    if (!b) return;
+    const ym = b.dataset.ym;
+    expanded.has(ym) ? expanded.delete(ym) : expanded.add(ym);
+    renderArchive();
+    observeReveals();
+  });
+
+  // ── Reveal on scroll (+ count-up for stats) ──
   const countUp = (el) => {
     const target = Number(el.dataset.count);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return (el.textContent = target);
     const start = performance.now();
-    const tick = (t) => {
-      const k = Math.min(1, (t - start) / 1200);
+    const tick = (now) => {
+      const k = Math.min(1, (now - start) / 1200);
       el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3)));
       if (k < 1) requestAnimationFrame(tick);
     };
@@ -119,21 +286,53 @@
       }),
     { threshold: 0.15 }
   );
-  document.querySelectorAll(".reveal").forEach((el, i) => {
-    el.style.transitionDelay = `${(i % 4) * 80}ms`;
-    io.observe(el);
-  });
+  function observeReveals() {
+    document.querySelectorAll(".reveal:not(.in)").forEach((el, i) => {
+      if (revealed) {
+        // 언어 전환으로 새로 그려진 요소는 바로 표시 (깜빡임 방지)
+        el.style.transition = "none";
+        el.classList.add("in");
+        requestAnimationFrame(() => (el.style.transition = ""));
+        return;
+      }
+      el.style.transitionDelay = `${(i % 4) * 80}ms`;
+      io.observe(el);
+    });
+  }
+
+  render();
+  revealed = true;
+
+  document.querySelectorAll(".lang-switch button").forEach((b) =>
+    b.addEventListener("click", () => {
+      if (b.dataset.lang === lang) return;
+      lang = b.dataset.lang;
+      try { localStorage.setItem("lang", lang); } catch {}
+      const url = new URL(location.href);
+      if (lang === "en") url.searchParams.delete("lang"); else url.searchParams.set("lang", lang);
+      history.replaceState(null, "", url);
+      render();
+    })
+  );
+
+  // Carousel
+  document.querySelectorAll(".carousel-ctrl .circle-btn").forEach((b) =>
+    b.addEventListener("click", () => {
+      const c = $("projectList");
+      const card = c.querySelector(".project");
+      c.scrollBy({ left: (card ? card.offsetWidth + 20 : 400) * Number(b.dataset.dir), behavior: "smooth" });
+    })
+  );
 
   // Nav border on scroll
   const nav = $("nav");
   addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 10), { passive: true });
 
-  // Theme toggle
+  // Theme toggle (default: dark)
   const root = document.documentElement;
-  try { const t = localStorage.getItem("theme"); if (t) root.dataset.theme = t; } catch {}
+  try { const th = localStorage.getItem("theme"); if (th) root.dataset.theme = th; } catch {}
   $("themeBtn").addEventListener("click", () => {
-    const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-    root.dataset.theme = dark ? "light" : "dark";
+    root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
     try { localStorage.setItem("theme", root.dataset.theme); } catch {}
   });
 })();
