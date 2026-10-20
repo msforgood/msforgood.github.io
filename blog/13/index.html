@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[논문 리뷰] ResNet 논문 리뷰 | Minseo Kim</title>
+  <meta name="description" content="+) ResNet이 1000장 정도 쌓이면 성능이 저하되는 문제를 해결하기 위한 추가 연구는 글 맨 아래에 있음 ResNet 마이크로소프트 팀이 소개한 ResNet 모델입니다. Residual 이라는 새로운 방법이 도입되었습니다. ILSVRC 2015에서 처음으로 Human recogn" />
+  <meta property="og:title" content="[논문 리뷰] ResNet 논문 리뷰 | Minseo Kim" />
+  <meta property="og:description" content="+) ResNet이 1000장 정도 쌓이면 성능이 저하되는 문제를 해결하기 위한 추가 연구는 글 맨 아래에 있음 ResNet 마이크로소프트 팀이 소개한 ResNet 모델입니다. Residual 이라는 새로운 방법이 도입되었습니다. ILSVRC 2015에서 처음으로 Human recogn" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/%EB%85%BC%EB%AC%B8%20%EA%B3%B5%EB%B6%80">머신러닝/논문 공부</a>
+      <h1>[논문 리뷰] ResNet 논문 리뷰</h1>
+      <time datetime="2022-10-06">2022.10.06</time>
+    </header>
+    <article class="post-body">
+<p>+) ResNet이 1000장 정도 쌓이면 성능이 저하되는 문제를 해결하기 위한 추가 연구는 글 맨 아래에 있음</p>
+<h2><b>ResNet</b></h2>
+<p>마이크로소프트 팀이 소개한 ResNet 모델입니다.</p>
+<p>Residual 이라는 새로운 방법이 도입되었습니다.</p>
+
+<figure><img alt="" loading="lazy" src="img01.png"/></figure>
+
+
+<p>ILSVRC 2015에서 처음으로 Human recognition보다 높은 성능을 보이며</p>
+<p>1위를 차지한 152 layer의 모델을 알아봅시다.</p>
+
+<p>↓ 논문 링크 ↓</p>
+<p><a href="https://arxiv.org/pdf/1512.03385.pdf" rel="noopener" target="_blank">ResNet paper</a></p>
+<details><summary>더보기</summary>
+<p>딥러닝 ResNet 논문 리뷰 pytorch 파이토치 tensorflow 텐서플로 code 코드</p>
+</details>
+<hr/>
+<figure><img alt="" loading="lazy" src="img02.png"/></figure>
+
+<hr/>
+
+<h3><b>Abstract</b></h3>
+
+<p>역대 ILSVRC 대회를 보면 depth가 커질수록 성능은 좋아지지만</p>
+<p>overfitting, gradient vanishing, 연산량 증가 등의 문제가 있다.</p>
+<p>그래서 이전에 사용된 것보다 훨씬 더 깊은 네트워크의 훈련을 용이하게 하기 위한</p>
+<p>Residual Learning (잔여 학습) 프레임워크를 제시한다.</p>
+
+
+<hr/>
+
+<h3><b>Introduction</b></h3>
+
+<p>이 논문에서 이야기하는 문제는 <b>Degradation Problem</b>이다.</p>
+<p>Network가 깊어질수록 성능이 저하되는 문제이다.</p>
+<p>Train accuracy와 test accuracy가 둘 다 낮아진다는 점에서 overfitting과 다르다.</p>
+
+<figure><img alt="" loading="lazy" src="img03.png"/></figure>
+
+
+<p>이 논문은 degradation의 문제가 더 깊은 레이어가 쌓일 수록</p>
+<p>optimize가 복잡해지기 때문에 일어나는 부작용으로 보고 해결하려고 한다.</p>
+
+<p>간단하게 <b>Identity mapping layer</b> 추가해봤지만 결과가 좋지 못했다.</p>
+<p>이때 Identity Mapping은 <b>입력과  함수 출력값이 동일한 것이</b>다.</p>
+
+<figure><img alt="" loading="lazy" src="img04.jpg"/></figure>
+
+
+<p>똑같은 x값을 나오게 하려면 활성함수가 y = x 처럼 선형함수여야 한다.</p>
+<p>그런데 CNN은 Relu 같은 <b>비선형 함수를 활성 함수로</b> 사용한다.</p>
+<p>그래서 CNN에서 Identity Mapping을 가능하게하기 위해</p>
+<p><b>Deep residual learing framework</b> 개념을 도입한다.</p>
+
+<figure><img alt="" loading="lazy" src="img05.png"/></figure>
+
+<p><br/>✍🏻 Instead of hoping each few stacked layers directly fit a desired underlying mapping, we explicitly let these layers fit a residual mapping. 쌓여진 레이어가 그 다음 레이어에 바로 적합되는 것이 아니라 잔차의 mapping에 적합하도록 만들었다.</p>
+
+
+<p><b>F(x) = H(x) + x</b></p>
+<p><b>H(x) = F(x) - x</b></p>
+
+<p>이 때, 임의로 만든 함수<b> H(x)는 </b><b>잔차(Residual)</b>가 된다.</p>
+<p>위 등식에서 Identity Mapping, 즉 <b>F(x) = x</b>를 가능하게 하려면 <b>H(x)를 0으로</b> 만들어야 한다.</p>
+
+<figure><img alt="" loading="lazy" src="img06.png"/></figure>
+
+<p>이때 보라색 add 할 때 배열의 차원 수를 같게 해야 한다.</p>
+<p>Input or Previous Layer와 Feature Map의 shape를 맞춰 주어야 한다.</p>
+<p>그래야 add 연산을 할 수 있다.</p>
+<p>이 add 연산을 <b>shortcut</b> 또는 <b>skip connection</b> 이라고 한다.</p>
+
+<p>이런 skip 과정 덕분에 forward, backward path가 단순해졌다.</p>
+<p>또, 역전파 과정에서 F(x) = H(x) + x 를 아무리 미분해도</p>
+<p><b>1이 남아 있기</b> 때문에 기울기 소실 문제를 예방할 수 있다. </p>
+
+<p>위와 같은 과정을 Residual Block 이라고 부른다.</p>
+
+<hr/>
+<h3><b>Deep Residual Learning</b></h3>
+
+<h4><b>Residual Learning</b></h4>
+<p>Residual mapping이 기존의 mapping보다 optimize하기 쉽다는 것을 가정한다.</p>
+<p>이전에는 <b>알지 못하는 최적의 값으로</b><b> H(x)를 학습</b>시켜야 한다는 어려움이 있었다.</p>
+<p><b>F(x) = x 라는 최적의 목표값</b>이 사전에 제공되기에 H<b>(x) 학습이 더 쉬워진다</b>.</p>
+<p>0이라는 숫자 개념으로 잔차를 수렴하게 하는 것이 더 쉽기 때문이다.</p>
+
+<h4><b>Identity Mapping by Shortcuts</b></h4>
+<p>F(x) + x 는 네트워크 구조 또한 크게 변경할 필요가 없다.</p>
+<p><b>입력에서 출력으로 바로 연결되는 shortcut만 추가</b>하면 되기 때문이다.</p>
+<p>입력과 같은 x가 그대로 출력에 연결되기에 추가적인 파라미터도 필요없고</p>
+<p>복잡한 곱셈 연산도 필요없는 것이 장점이다.</p>
+
+<h4><b>Network Architectures</b></h4>
+<h4>Plain Network</h4>
+<p>Baseline 모델로 사용한 plain net은 VGGNet을 참고했다.</p>
+<p>모두 동일한 feature map 사이즈를 갖게 하기 위해서 레이어 들은 동일한 수의 filter를 가진다.</p>
+<p> feature map 사이즈가 절반이 되면 filter 수는 2배가 되도록 한다.</p>
+
+<p>Conv layer 는 3 x 3 filter, stride 2로 down sampling.</p>
+<p>이때 down sampling이란 더 작은 이미지로 크기를 축소시키는 것이다.</p>
+<p>VGGNet에서는 출력 feature map 크기를 줄일 때 max pooling을 사용하였지만</p>
+<p>ResNet은 복잡도를 줄이기 위해 차원이 바뀌는 블록의 첫 번째 convolutional layer에서</p>
+<p>stride를 2로 사용하여 feature map 크기를 줄인다.</p>
+
+<p>global average pooling layer 사용한다.</p>
+<p>마지막에는 softmax로 1000-way fully-connected layer를 통과시킨다.<b></b></p>
+<figure><img alt="" loading="lazy" src="img07.png"/></figure>
+
+<h4>Residual Network</h4>
+<p>Plain Network에 shortcut connection을 도입했다.</p>
+<p>Input과 output의 차원을 맞춰주기 위해 차원을 증가시켜야 하는데, 두 가지 방법 사용</p>
+
+<p>(A) 0을 넣어서 padding</p>
+<figure><img alt="" loading="lazy" src="img08.png"/></figure>
+
+<p>(B) Ws로 linear projection</p>
+<h4><b>Implementation</b></h4>
+<ul>
+<li>Image resized 224 x 224</li>
+<li>Batch normalization 사용</li>
+<li>Initialize Weights</li>
+<li>SGD, mini batch 256</li>
+<li>Learning rate 0.1</li>
+<li>Iteration 60 * 10^4</li>
+<li>Weight decay 0.0001, momentum 0.9</li>
+<li>No dropout</li>
+</ul>
+<hr/>
+<h2> </h2>
+<h2><b>ResNet Code</b></h2>
+
+<p>Pytorch로 ResNet 구현</p>
+<p><a href="https://github.com/imkmsh/DeepLearning/blob/master/Supervised%20Learning/Vision/Object%20Classification/5_Resnet/ResNet_pt.py" rel="noopener" target="_blank">ResNet_pt.py</a></p>
+<a class="link-card" href="https://github.com/imkmsh/DeepLearning/blob/master/Supervised%20Learning/Vision/Object%20Classification/5_Resnet/ResNet_pt.py" rel="noopener" target="_blank"><strong>GitHub - imkmsh/DeepLearning</strong>Contribute to imkmsh/DeepLearning development by creating an account on GitHub.<small>github.com</small></a>
+
+<p>Tensorflow로 ResNet 구현</p>
+<p><a href="https://github.com/imkmsh/DeepLearning/blob/master/Supervised%20Learning/Vision/Object%20Classification/5_Resnet/Resnet_tf.py" rel="noopener" target="_blank" title="ResNet_tf.py">ResNet_tf.py</a></p>
+<a class="link-card" href="https://github.com/imkmsh/DeepLearning/blob/master/Supervised%20Learning/Vision/Object%20Classification/5_Resnet/Resnet_tf.py" rel="noopener" target="_blank"><strong>GitHub - imkmsh/DeepLearning</strong>Contribute to imkmsh/DeepLearning development by creating an account on GitHub.<small>github.com</small></a>
+
+<hr/>
+
+<p>( + + + ) </p>
+
+<p>ResNet이 1000장 정도 쌓이면 성능이 저하되는 문제를 해결하기 위한 추가 연구</p>
+<p>↓ 링크 ↓</p>
+<p><a href="../14/" rel="noopener" target="_blank">Pre-activation ResNet</a></p>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#ResNet</span><span>#ResNet code</span><span>#ResNet 코드</span><span>#논문리뷰</span><span>#딥러닝</span><span>#딥러닝논문</span><span>#딥러닝논문리뷰</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

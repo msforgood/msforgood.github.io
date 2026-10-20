@@ -13,8 +13,7 @@
     badge: '<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 15a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM8.21 13.89 7 23l5-3 5 3-1.21-9.12"/></svg>',
   };
   const AWARD_ICONS = ["🏆", "🥇", "🎖️", "🏅", "✨"];
-  const joinDot = (...xs) => xs.filter(Boolean).join(" · ");
-  const ext = (url) => (url.startsWith("mailto:") ? "" : ' target="_blank" rel="noopener"');
+  const ext = (url) => (/^https?:/.test(url) ? ' target="_blank" rel="noopener"' : "");
 
   // ── Language ──
   let lang = "en";
@@ -29,6 +28,16 @@
   const t = (v) => (v && typeof v === "object" ? v[lang] ?? v.en ?? "" : v ?? "");
   const ui = (key) => I18N[lang]?.[key] ?? I18N.en[key] ?? "";
 
+  // 구분 기호 대신 UI로: 기간 { from, to }은 선으로 잇고, 여러 항목은 구분선으로 나눔 (반환값은 HTML)
+  const isRange = (v) => v && typeof v === "object" && "from" in v;
+  const parts = (...xs) => xs.flat().flatMap((x) => (isRange(x) ? [x] : [t(x)].flat())).filter((x) => isRange(x) || x);
+  const range = (r) => `<span class="range"><span>${esc(t(r.from))}</span><span class="range-line" aria-hidden="true"></span><span>${esc(t(r.to))}</span></span>`;
+  const meta = (...xs) => {
+    const ps = parts(...xs).map((x) => (isRange(x) ? range(x) : esc(x)));
+    return ps.length > 1 ? `<span class="meta"><span class="mi">${ps.map((x) => `<span>${x}</span>`).join("")}</span></span>` : ps.join("");
+  };
+  const plain = (...xs) => parts(...xs).map((x) => (isRange(x) ? `${t(x.from)} to ${t(x.to)}` : x)).join(", ");
+
   let revealed = false; // 첫 렌더 이후엔 애니메이션 없이 즉시 표시
 
   function render() {
@@ -37,10 +46,10 @@
     document.querySelectorAll(".lang-switch button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
 
     const name = t(P.name);
-    document.title = `${name} — ${t(P.role)}`;
+    document.title = `${name} | ${plain(P.role)}`;
     $("navName").textContent = name;
-    $("role").textContent = lang === "en" ? t(P.role) : `${name} · ${t(P.role)}`;
-    $("tagline").textContent = t(P.tagline);
+    $("role").innerHTML = lang === "en" ? meta(P.role) : meta(name, P.role);
+    $("tagline").innerHTML = parts(P.tagline).map((line, i) => `<span${i ? ' class="muted"' : ""}>${esc(line)}</span>`).join("");
     $("intro").textContent = t(P.intro);
     $("avatar").innerHTML = P.avatar ? `<img src="${esc(P.avatar)}" alt="${esc(name)}">` : esc(P.initials);
 
@@ -58,7 +67,7 @@
 
     // Stats
     const stats = P.stats || [
-      { num: P.projects.length, label: ui("stats.projects") },
+      { num: P.services.length, label: ui("stats.services") },
       { num: P.awards.length, label: ui("stats.awards") },
       { num: (P.research || []).length, label: ui("stats.research") },
     ];
@@ -66,39 +75,67 @@
       .map((s) => `<div><div class="stat-num" data-count="${s.num}">${revealed ? s.num : 0}</div><div class="stat-label">${esc(t(s.label))}</div></div>`)
       .join("");
 
-    // Projects
-    $("projectList").innerHTML = P.projects
+    // Services
+    $("serviceList").innerHTML = P.services
       .map((p) => {
         const tag = p.link ? "a" : "div";
-        const href = p.link ? ` href="${esc(p.link)}" target="_blank" rel="noopener"` : "";
+        const href = p.link ? ` href="${esc(p.link)}"${ext(p.link)}` : "";
         return `<${tag} class="project reveal" data-color="${esc(p.color || "blue")}"${href}>
-          <div class="project-meta">${esc(joinDot(t(p.period), t(p.role)))}</div>
-          <h3>${esc(t(p.name))}</h3>
+          ${p.image ? `<div class="project-thumb"><img src="${esc(p.image)}" alt="" loading="lazy"></div>` : ""}
+          <div class="project-meta">${meta(p.period, p.role)}</div>
+          <h3>${esc(t(p.name))}${p.status ? `<span class="status">${esc(t(p.status))}</span>` : ""}</h3>
           <p>${esc(t(p.summary))}</p>
           <div class="tags">${(p.tags || []).map((x) => `<span class="tag">${esc(t(x))}</span>`).join("")}</div>
+          ${!p.link && p.links ? `<div class="project-links">${p.links.map((l) => `<a href="${esc(l.url)}"${ext(l.url)}>${esc(t(l.label))} ↗</a>`).join("")}</div>` : ""}
           ${p.link ? '<span class="go">↗</span>' : ""}
+        </${tag}>`;
+      })
+      .join("");
+
+    // Projects
+    $("projectList").innerHTML = (P.projects || [])
+      .map((p) => {
+        const tag = p.link ? "a" : "div";
+        const href = p.link ? ` href="${esc(p.link)}"${ext(p.link)}` : "";
+        return `<${tag} class="pj reveal"${href}>
+          ${p.image
+            ? `<div class="pj-img"><img src="${esc(p.image)}" alt="" loading="lazy"></div>`
+            : `<div class="pj-img ph" data-color="${esc(p.color || "blue")}"><span>${esc(t(p.mark || p.name))}</span></div>`}
+          <div class="pj-body">
+            <div class="pj-meta">${meta(p.period, p.place)}</div>
+            <h3>${esc(t(p.name))}</h3>
+            <div class="pj-role">${meta(p.role)}</div>
+            <p>${esc(t(p.summary))}</p>
+            <div class="tags">${(p.tags || []).map((x) => `<span class="tag">${esc(t(x))}</span>`).join("")}</div>
+          </div>
         </${tag}>`;
       })
       .join("");
 
     // Awards
     $("awardList").innerHTML = P.awards
-      .map((a, i) => `<div class="award reveal">
-          <div class="award-icon">${AWARD_ICONS[i % AWARD_ICONS.length]}</div>
+      .map((a, i) => {
+        const tag = a.link ? "a" : "div";
+        const href = a.link ? ` href="${esc(a.link)}"${ext(a.link)}` : "";
+        return `<${tag} class="award reveal"${href}>
+          ${a.image
+            ? `<div class="award-thumb"><img src="${esc(a.image)}" alt="" loading="lazy"></div>`
+            : `<div class="award-icon">${AWARD_ICONS[i % AWARD_ICONS.length]}</div>`}
           <div class="award-date">${esc(t(a.date))}</div>
           <div class="award-title">${esc(t(a.title))}</div>
-          <div class="award-org">${esc(t(a.org))}</div>
-          ${t(a.desc) ? `<div class="award-desc">${esc(t(a.desc))}</div>` : ""}
-        </div>`)
+          <div class="award-org">${meta(a.org)}</div>
+          ${parts(a.desc).length ? `<div class="award-desc">${meta(a.desc)}</div>` : ""}
+        </${tag}>`;
+      })
       .join("");
 
     // Experience
     $("expList").innerHTML = (P.experience || [])
       .map((e) => `<div class="edu reveal">
-          <div class="edu-period">${esc(t(e.period))}</div>
+          <div class="edu-period">${meta(e.period)}</div>
           <div class="edu-school">${esc(t(e.org))}</div>
           <div class="edu-degree">${esc(t(e.title))}</div>
-          ${t(e.location) || t(e.detail) ? `<div class="edu-detail">${esc(joinDot(t(e.location), t(e.detail)))}</div>` : ""}
+          ${parts(e.location, e.detail).length ? `<div class="edu-detail">${meta(e.location, e.detail)}</div>` : ""}
         </div>`)
       .join("");
 
@@ -108,7 +145,7 @@
           <span class="r-type${r.type === "patent" ? " patent" : ""}">${esc(ui("research." + r.type))}</span>
           <div class="r-body">
             <div class="r-title">${esc(t(r.title))}</div>
-            ${t(r.venue) || r.date ? `<div class="r-meta">${esc(joinDot(t(r.venue), r.date))}</div>` : ""}
+            ${parts(r.venue, r.date).length ? `<div class="r-meta">${meta(r.venue, r.date)}</div>` : ""}
           </div>
         </div>`)
       .join("");
@@ -116,10 +153,10 @@
     // Education
     $("eduList").innerHTML = P.education
       .map((e) => `<div class="edu reveal">
-          <div class="edu-period">${esc(t(e.period))}</div>
-          <div class="edu-school">${esc(t(e.school))}</div>
+          <div class="edu-period">${meta(e.period)}</div>
+          <div class="edu-school">${e.link ? `<a href="${esc(e.link)}"${ext(e.link)}>${esc(t(e.school))} ↗</a>` : esc(t(e.school))}</div>
           <div class="edu-degree">${esc(t(e.degree))}</div>
-          ${t(e.detail) ? `<div class="edu-detail">${esc(t(e.detail))}</div>` : ""}
+          ${parts(e.detail).length ? `<div class="edu-detail">${meta(e.detail)}</div>` : ""}
         </div>`)
       .join("");
 
@@ -127,7 +164,7 @@
     $("certList").innerHTML = P.certifications
       .map((c) => `<div class="cert reveal">
           <div class="cert-badge">${ICONS.badge}</div>
-          <div><div class="cert-name">${esc(t(c.name))}</div><div class="cert-issuer">${esc(joinDot(t(c.issuer), t(c.date)))}</div></div>
+          <div><div class="cert-name">${esc(t(c.name))}</div><div class="cert-issuer">${meta(c.issuer, c.date)}</div></div>
         </div>`)
       .join("");
     $("skillList").innerHTML = P.skills.map((s) => `<span class="tag">${esc(t(s))}</span>`).join("");
@@ -138,9 +175,9 @@
     observeReveals();
   }
 
-  // ── Archive: 프로젝트·수상·자격증·활동을 월별 타임라인으로 ──
-  const TYPES = ["project", "career", "award", "research", "education", "cert", "activity"];
-  const TYPE_EMOJI = { project: "🚀", career: "💼", award: "🏆", research: "📄", education: "🎓", cert: "📜", activity: "✦" };
+  // ── Archive: 프로젝트, 수상, 자격증, 활동을 월별 타임라인으로 ──
+  const TYPES = ["service", "project", "career", "award", "research", "education", "cert", "activity"];
+  const TYPE_EMOJI = { service: "🚀", project: "🛰️", career: "💼", award: "🏆", research: "📄", education: "🎓", cert: "📜", activity: "✦" };
   const CHEVRON = '<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>';
   const ROWS_VISIBLE = 3;
   let archiveFilter = "all";
@@ -148,7 +185,8 @@
 
   const archiveEntries = () =>
     [
-      ...P.projects.map((p) => ({ type: "project", date: p.date, title: p.name, org: p.role, desc: p.summary, image: p.image, link: p.link, color: p.color, tags: p.tags })),
+      ...P.services.map((p) => ({ type: "service", date: p.date, title: p.name, org: p.role, desc: p.summary, image: p.image, link: p.link || p.links?.[0]?.url, color: p.color, tags: p.tags })),
+      ...(P.projects || []).map((p) => ({ type: "project", date: p.date, title: p.name, org: p.role, desc: p.summary, image: p.image, link: p.link, tags: p.tags })),
       ...(P.experience || []).map((e) => ({ type: "career", date: e.date, title: e.title, org: e.org, desc: e.period })),
       ...P.awards.map((a) => ({ type: "award", ...a })),
       ...(P.research || []).map((r) => ({ type: "research", date: r.date, title: r.title, org: ui("research." + r.type), desc: r.venue, link: r.link })),
@@ -162,30 +200,30 @@
   function archiveCover(items, ym) {
     const withImg = items.find((e) => e.image);
     if (withImg) {
-      return `<div class="a-cover reveal"><img src="${esc(withImg.image)}" alt="${esc(t(withImg.title))}" loading="lazy"><div class="cap">${esc(t(withImg.title))}</div></div>`;
+      return `<div class="a-cover reveal"><img src="${esc(withImg.image)}" alt="${esc(plain(withImg.title))}" loading="lazy"><div class="cap">${esc(t(withImg.title))}</div></div>`;
     }
-    const proj = items.find((e) => e.type === "project");
+    const proj = items.find((e) => e.type === "service");
     if (proj) {
       return `<div class="a-cover gen reveal" data-color="${esc(proj.color || "blue")}">
-        <div class="k">${esc(joinDot(ui("archive.project"), t(proj.org)))}</div>
+        <div class="k">${meta(ui("archive.service"), proj.org)}</div>
         <div class="big">${esc(t(proj.title))}</div>
-        <div class="small">${esc(t(proj.desc))}</div>
+        <div class="small">${meta(proj.desc)}</div>
       </div>`;
     }
     const award = items.find((e) => e.type === "award");
     if (award) {
       return `<div class="a-cover gen reveal" data-color="gold">
         <div class="emoji">🏆</div>
-        <div class="k">${esc(joinDot(ui("archive.award"), t(award.org)))}</div>
+        <div class="k">${meta(ui("archive.award"), award.org)}</div>
         <div class="big">${esc(t(award.title))}</div>
-        ${t(award.desc) ? `<div class="small">${esc(t(award.desc))}</div>` : ""}
+        ${parts(award.desc).length ? `<div class="small">${meta(award.desc)}</div>` : ""}
       </div>`;
     }
     const career = items.find((e) => e.type === "career");
     if (career) {
       return `<div class="a-cover gen reveal" data-color="blue">
         <div class="emoji">💼</div>
-        <div class="k">${esc(ui("archive.career"))} · ${esc(t(career.desc))}</div>
+        <div class="k">${meta(ui("archive.career"), career.desc)}</div>
         <div class="big">${esc(t(career.org))}</div>
         <div class="small">${esc(t(career.title))}</div>
       </div>`;
@@ -194,7 +232,7 @@
     return `<div class="a-cover gen month reveal" data-color="purple">
       <div class="k">${m ? esc(y) : ""}</div>
       <div class="big">${esc(m || y)}</div>
-      <div class="small">${items.map((e) => esc(t(e.title))).join(" · ")}</div>
+      <div class="small">${meta(items.map((e) => e.title))}</div>
     </div>`;
   }
 
@@ -202,13 +240,13 @@
     const tag = e.link ? "a" : "div";
     const href = e.link ? ` href="${esc(e.link)}"${ext(e.link)}` : "";
     const thumb = e.image ? `<img src="${esc(e.image)}" alt="" loading="lazy">` : TYPE_EMOJI[e.type] || "•";
-    const meta = e.type === "project" && e.tags ? e.tags.map(t).join(" · ") : t(e.desc);
+    const info = (e.type === "service" || e.type === "project") && e.tags ? meta(e.tags) : meta(e.desc);
     return `<${tag} class="a-row"${href}>
       <div class="a-thumb">${thumb}<span class="badge">${esc(ui("archive." + e.type))}</span></div>
       <div class="a-body">
-        <div class="a-org">${esc(t(e.org))}</div>
+        <div class="a-org">${meta(e.org)}</div>
         <div class="a-title">${esc(t(e.title))}</div>
-        <div class="a-desc"><b>${esc(e.date)}</b>${esc(meta)}</div>
+        <div class="a-desc"><b>${esc(e.date)}</b>${info}</div>
       </div>
     </${tag}>`;
   }
@@ -318,7 +356,7 @@
   // Carousel
   document.querySelectorAll(".carousel-ctrl .circle-btn").forEach((b) =>
     b.addEventListener("click", () => {
-      const c = $("projectList");
+      const c = $("serviceList");
       const card = c.querySelector(".project");
       c.scrollBy({ left: (card ? card.offsetWidth + 20 : 400) * Number(b.dataset.dir), behavior: "smooth" });
     })

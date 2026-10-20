@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KHUggle 이미지 복원 AI 경진대회 | Minseo Kim</title>
+  <meta name="description" content="&lt;strong&gt;손상된 경희대학교의 사진을 고품질로 복원&lt;/strong&gt; 총 7개의 모델을 가중합 방식으로 앙상블 하는 방향으로 코드를 구성했으며 구체적인 모델의 내용은 아래와 같습니다. 학습을 진행한 ESR_GAN과 BSR_GAN의 경우 아래와 같은 조건에서 학습했습니다. ESR_GAN" />
+  <meta property="og:title" content="KHUggle 이미지 복원 AI 경진대회 | Minseo Kim" />
+  <meta property="og:description" content="&lt;strong&gt;손상된 경희대학교의 사진을 고품질로 복원&lt;/strong&gt; 총 7개의 모델을 가중합 방식으로 앙상블 하는 방향으로 코드를 구성했으며 구체적인 모델의 내용은 아래와 같습니다. 학습을 진행한 ESR_GAN과 BSR_GAN의 경우 아래와 같은 조건에서 학습했습니다. ESR_GAN" />
+  <meta property="og:image" content="02.png" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat meta" href="../../#awards"><span class="mi"><span>Awards</span><span>4등</span><span>경희대학교 인공지능융합 혁신인재양성사업단</span></span></a>
+      <h1>KHUggle 이미지 복원 AI 경진대회</h1>
+      <time datetime="2022-12-28">2022.12.28</time>
+    </header>
+    <article class="post-body">
+<div class="cols"><div><figure><img src="01.png" alt="" loading="lazy" /></figure></div><div><figure><img src="02.png" alt="" loading="lazy" /></figure></div></div><h2>대회 설명</h2><p><strong>손상된 경희대학교의 사진을 고품질로 복원</strong></p><h3><strong>📊 대회 주제</strong></h3><ul><li>배경<ul><li>대부분의 사진은 다양한 요소들로 인해 화질 저하가 발생</li><li>사진을 깨끗하게 복원하고자하는 요구 증가</li><li>손상된 교내의 사진을 딥러닝 기술로 복원하는 기술 개발</li></ul></li><li>목표 : 이미지 복원을 위한 초해상화 모델 개발</li></ul><h3><strong>🎯 데이터셋</strong></h3><ul><li>DIV2K: 초해상화 딥러닝 모델의 훈련을 위해 대표적으로 사용되는 고해상도 이미지 800장입니다.<ul><li>대상 스케일 팩터(여기서는 x4)에 따라, 그만큼 줄어든 크기의 이미지를 LR(Low-Resolution), 원본은 HR(High-Resolution) 이미지로 부릅니다.</li><li>본 대회에서는 깨끗한 clean 버전 (khuggle_train_clean) 과 손상된 degraded 버전 (khuggle_train_degraded) 이 둘다 제공되니, 목적에 따라 데이터셋을 취사선택 할 수 있습니다.</li><li><strong>본 대회에서는 모델 훈련을 위해 khuggle_train_clean과 khuggle_train_degraded만 사용 가능합니다.</strong></li></ul></li><li>Set14: 초해상화 딥러닝 모델의 검증을 위해 대표적으로 사용되는 고해상도 이미지 14장입니다.<ul><li>LR과 HR의 기준은 DIV2K와 동일합니다.</li><li>검증용 데이터셋은 Set14이외에 Set5, Urban100, B100, Manga109등이 있으니, 검색 후 자유롭게 찾아 사용하셔도 됩니다.</li></ul></li></ul><h3><strong>💡 태스크</strong></h3><ul><li>평가 : 초해상화 모델을 통해 복원된 이미지를 원본 이미지와 비교 (x4배로 초해상화)</li><li>평가 방식: PSNR (Peak Signal-to-Noise Ratio)<ul><li>입력값: 저해상도 LR 이미지</li><li>출력값: 4배로 초해상화된 SR 이미지</li><li>정답값: 고해상도 (원본) HR 이미지</li></ul></li></ul><h2>해결 방법</h2><p>총 7개의 모델을 가중합 방식으로 앙상블 하는 방향으로 코드를 구성했으며 구체적인 모델의 내용은 아래와 같습니다.</p><ol><li>ESR_GAN(Pretrain weight + fintuning 1 epochs) #PSNR: 29.41</li><li>Real_ESR_GAN(Only using pretrain weight) #PSNR: 29.9675</li><li>Real_HAT_GAN(Only using pretrain weight) #PSNR: 30.15</li><li>Swin_IR_Large(Only using pretrain weight) #PSNR: 29.95</li><li>BSR_GAN(Only using pretrain weight) #PSNR: 29.90</li><li>BSR_GAN(Pretrain weight + fintuning 40 epochs) #PSNR: 29.98</li><li>MMSR_SRResNet(Only using pretrain weigh) #PSNR: 29.53</li></ol><p>학습을 진행한 ESR_GAN과 BSR_GAN의 경우 아래와 같은 조건에서 학습했습니다.</p><p>ESR_GAN: - batchSize : 64- nEpochs : 1- lr : 1e-4 - Optimizer : Adam - Loss: MS-SSIM + L1 - scheduler: none - DA: none</p><p>BSR_GAN: - batchSize : 4 - nEpochs : 40 - lr : 1e-4 - Optimizer: RAdam - Loss: MS-SSIM + L1 - scheduler: cosine annealing LR - DA: none</p><p>해당 모델들이 inference해서 생성한 이미지들을 차례 대로 아래와 같은 가중치로 가중합했습니다.</p><p>weight = [0.2,0.2,0.2,0.2,0.2/3,0.2/3,0.2/3]</p><h2>의미</h2><p>첫 이미지 화질 개선 분야 도전, Super Resolution</p><h2>GIT Link</h2><p>파일 구성은 아래와 같습니다.</p><ul><li>사용설명서: 구성한 코드의 전체 내용과 설명서가 담겨 있는 문서가 담긴 폴더입니다.</li><li>code : 각 개별 모델의 코드와 앙상블 하는데 사용한 코드가 담긴 폴더입니다.<ul><li>ESRGAN.ipynb (모델)</li><li>BSRGAN_epoch_40.ipynb (모델)</li><li>REAL_HAT_GAN.inpynb (모델)</li><li>MMSR_SRResNet.ipynb (모델)</li><li>BSR_GAN_+realESRGAN+_SwinIR_large.ipynb (모델)</li><li>Esemble.ipynb (앙상블)</li></ul></li><li>weight: 학습을 시킨 모델의 경우 모델이 학습한 후의 weight, pretrain model의 경우 다운 받은 weight가 담긴 폴더입니다. weight가 없는 경우, ipynb 내부에서 다운 받을 수 있습니다.</li><li>inference image: 각 개별 모델이 inference한 이미지가 담긴 폴더입니다. 해당 이미지를 앙상블에 사용하였습니다.</li></ul>
+    </article>
+    <footer class="post-foot">
+      <a class="post-back" href="../../#awards">← 홈으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

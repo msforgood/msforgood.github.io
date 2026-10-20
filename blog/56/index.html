@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Next.js &amp; Prisma 실행 오류 해결하기 (Permission Denied) | Minseo Kim</title>
+  <meta name="description" content="$ npm run build &gt; {프로젝트명}@2.0.0 build &gt; next build sh: 1: next: Permission denied $ npx prisma generate sh: 1: prisma: Permission denied 728x90 rm -rf node_modu" />
+  <meta property="og:title" content="Next.js &amp; Prisma 실행 오류 해결하기 (Permission Denied) | Minseo Kim" />
+  <meta property="og:description" content="$ npm run build &gt; {프로젝트명}@2.0.0 build &gt; next build sh: 1: next: Permission denied $ npx prisma generate sh: 1: prisma: Permission denied 728x90 rm -rf node_modu" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" onload="hljs.highlightAll()"></script>
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=Computer%20S%26E/%ED%95%98%EB%8B%A4-%EB%B3%B4%EB%8B%88">Computer S&amp;E/하다-보니</a>
+      <h1>Next.js &amp; Prisma 실행 오류 해결하기 (Permission Denied)</h1>
+      <time datetime="2025-03-18">2025.03.18</time>
+    </header>
+    <article class="post-body">
+<p>$ npm run build<br/><br/>&gt; {프로젝트명}@2.0.0 build<br/>&gt; next build<br/><br/>sh: 1: next: Permission denied<br/>$ npx prisma generate<br/>sh: 1: prisma: Permission denied</p>
+
+<div>
+<div>
+<div>728x90</div>
+<ins></ins>
+
+</div>
+</div>
+<div>
+<pre><code>rm -rf node_modules package-lock.json
+npm install​</code></pre>
+<br/>
+<div>
+<div> </div>
+</div>
+</div>
+<div>무적의 삭제..</div>
+<div><figure><img alt="" loading="lazy" src="img01.webp"/></figure>
+</div>
+    </article>
+    <footer class="post-foot">
+      
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

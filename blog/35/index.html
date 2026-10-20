@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[확률/통계] 2-1. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석) | Minseo Kim</title>
+  <meta name="description" content="Intro 사람은 무언가를 인식할 때 가능성을 따집니다. 판단이 확실하지 않으면 가장 그럴듯한 쪽으로 인식합니다. 따라서 패턴 인식 시스템도 이 법칙을 따르지 않을 수 없습니다. 하지만 기계와 사람은 다릅니다. 사람은 판단에 느낌을 동원하지만 컴퓨터는 그럴 수 없습니다. 프로그래밍을 위" />
+  <meta property="og:title" content="[확률/통계] 2-1. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석) | Minseo Kim" />
+  <meta property="og:description" content="Intro 사람은 무언가를 인식할 때 가능성을 따집니다. 판단이 확실하지 않으면 가장 그럴듯한 쪽으로 인식합니다. 따라서 패턴 인식 시스템도 이 법칙을 따르지 않을 수 없습니다. 하지만 기계와 사람은 다릅니다. 사람은 판단에 느낌을 동원하지만 컴퓨터는 그럴 수 없습니다. 프로그래밍을 위" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/%EA%B8%B0%EC%B4%88%20%EA%B3%B5%EB%B6%80">머신러닝/기초 공부</a>
+      <h1>[확률/통계] 2-1. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석)</h1>
+      <time datetime="2023-01-11">2023.01.11</time>
+    </header>
+    <article class="post-body">
+<figure><img alt="" loading="lazy" src="img01.png"/></figure>
+
+<h4><b>      Intro      </b></h4>
+<p>사람은 무언가를 인식할 때 가능성을 따집니다. 판단이 확실하지 않으면 <b>가장 그럴듯한</b> 쪽으로 인식합니다. 따라서 패턴 인식 시스템도 이 법칙을 따르지 않을 수 없습니다. 하지만 기계와 사람은 다릅니다. 사람은 판단에 느낌을 동원하지만 컴퓨터는 그럴 수 없습니다. 프로그래밍을 위해서는 <b>수학</b>이 필요합니다.</p>
+<figure><img alt="" loading="lazy" src="img02.png"/></figure>
+
+<p>위 그림은 10개 숫자를 분류하는 예제입니다. 입력 패턴으로부터 특징 벡터 x를 추출하고 그것이 wi일 확률 P(wi | x)를 구합니다. 그리고 가장 큰 확률을 가진 부류로 분류합니다.</p>
+
+<p>더 구체적으로 사후 확률 P(wi | x)를 구하는 방법을 이제 설명합니다.</p>
+<hr/>
+<h4><b>      2.1 확률과 통계      </b></h4>
+<p><b>  2.1.1 확률 기초  </b></p>
+
+<blockquote>주사위</blockquote>
+<div> </div>
+<div>주사위를 던졌을 때 3이 나올 확률 P(X=3) = 1/6 은 간단한 예제입니다. 이때 X를 <b>랜덤 변수</b>라고 부릅니다. 이 경우 X는 이산 (discrete) 값을 가집니다.</div>
+<div> </div>
+
+<blockquote>사람 키</blockquote>
+<div><figure><img alt="" loading="lazy" src="img03.png"/></figure>
+</div>
+<div>사람의 키는 그림에서 볼 수 있듯이 연속 값을 가집니다.. 이때 키의 확률 분포는 확률 밀도 함수 (Probability Density Function) p(X)로 표현됩니다.</div>
+<div> </div>
+<div>이 책에서는 이산 값의 확률과 연속 값의 확률 밀도를 대문자 P(.)와 소문자 p(.)로 구분하여 표기합니다.</div>
+<div> </div>
+<div> </div>
+<blockquote>패턴 인식에서는 특징 각각이 랜덤 변수에 해당</blockquote>
+
+
+<blockquote>확률 실험 (사전 확률, 우도, 사후 확률)</blockquote>
+
+<p>조금 더 복잡한 상황을 생각해 볼까요. </p>
+<figure><img alt="" loading="lazy" src="img04.png"/></figure>
+
+<p>위 그림의 상황으로 관찰 실험을 해 봅시다. 주머니는 상자를 고를 용도입니다. 선택된 상자에서 공을 하나 집어 색깔을 관찰하고 뽑은 것은 다시 집어 넣는 복원 추출을 합니다.</p>
+
+<p>랜덤 변수 두 개를 정의하겠습니다.</p>
+<p>용지 X∈{A,B}, 공 Y={파랑, 하양}</p>
+
+<p>1. 상자 A가 선택될 확률은?</p>
+<p>주머니에서 A를 뽑을 확률과 같습니다.</p>
+
+<p>P(X=A) = P(A) = 7/10</p>
+<hr/>
+<p>2. 상자 A에서 하얀 공이 뽑힐 확률은?</p>
+<p>A를 뽑았다는 조건 하에 A에서 하얀 공을 뽑을 확률입니다.</p>
+
+<p><b>조건부 확률 </b>P(Y=하양|X=A) = P(하양|A) = 2/10</p>
+<hr/>
+<p>3. 상자는 A이고 공은 하양이 뽑힐 확률은?</p>
+<p>주머니에서 A를 뽑고 동시에 A에서 하얀 공을 뽑을 확률입니다. 확률의 곱으로 구할 수 있습니다.</p>
+
+<p><b>결합 확률 </b>P(A, 하양) = P(하양|A)P(A) = (2/10)(7/10) = 7/50</p>
+<hr/>
+<p>4. 하얀 공이 나올 확률은?</p>
+<p>A를 고르고 하얀 공을 뽑을 확률과, B를 고르고 하얀 공을 뽑을 확률의 합입니다.</p>
+
+<p><b>주변 확률 </b>P(하양) = P(하양|A)P(A)+P(하양|B)P(B) = (2/10)(7/10)+(9/15)(3/10) = 8/25</p>
+
+
+<blockquote>P(X,Y) = P(X)P(Y)이면 X와 Y는 독립</blockquote>
+
+<p>두 랜덤 변수가 서로 영향을 미치지 못하면 둘은 <b>독립</b>입니다.</p>
+<p>위의 예제는 P(X,Y)≠P(X)P(Y)이므로 독립이 아닙니다. 즉, 주머니가 공의 색깔에 영향을 미치고 있는 것입니다.</p>
+
+
+<blockquote>P(X)를 <b>사전 확률(</b>prior probability)이라고 부름</blockquote>
+
+
+<blockquote>문제를 반대로</blockquote>
+<div> </div>
+<div>그렇다면 반대로 하얀 공이 뽑혔는데 어느 상자에서 나왔는지 맞히려면 어떻게 해야 할까요?</div>
+<div>상자 A와 B에서 나왔을 가능성 각각을 구하고 큰 가능성을 보인 상자를 답으로 취해야 맞출 가능성이 최대 (오류 범할 가능성이 최소)가 됩니다. 그렇다면 그 가능성은 어떻게 계산할까요?</div>
+<div> </div>
+<ul>
+<li>생각 1</li>
+</ul>
+<div>상자 A의 하얀 공 확률과 상자 B의 하얀 공 확률을 비교하여 큰 쪽을 취합니다. P(하양|B)=9/15 &gt; P(하양|A)=2/10 이므로 ‘상자 B에서 나왔다’고 말합니다. 조건부 확률 P(Y|X)를 사용한 셈입니다. 이 조건부 확률을 <b>우도(</b>likelihood)라고 부릅니다. 이는 타당할까요?</div>
+<div> </div>
+<ul>
+<li>생각 2</li>
+</ul>
+<div>
+<div>상자 A와 상자 B의 선택 가능성을 비교하여 큰 쪽을 취합니다. qP(A)=7/10 &gt; P(B)=3/10 이므로 ‘상자 A에서 나왔다’고 말합니다. 사전 확률 P(X)를 사용한 셈입니다. 이는 타당할까요?</div>
+<div> </div>
+<div> </div>
+<div>두 생각 모두 타당하지 않습니다. 생각 1과 생각 2에는 한계가 있습니다.</div>
+<div>극단적으로 P(A)=0.999라면 생각 1이 틀린 것이 확실합니다.</div>
+<div>또, 극단적으로 P(하양|A)=0.999라면 생각 2가 틀린 것이 확실합니다.</div>
+<div>그렇기 때문에 우도와 사전 확률을 모두 고려하는 것이 타당합니다.</div>
+<div> </div>
+<div> </div>
+<div>조건부 확률 P(A|하양)과 P(B|하양) 을 비교하여 큰 쪽을 취할 것입니다.</div>
+<div>즉, 이미 하얀 공을 뽑은 상황에서 A에서 나왔을 확률과 B에서 나왔을 확률을 비교하는 것입니다.</div>
+<div>이러한 P(X|Y)를 <b>사후 확률(</b>posterior probability)라고 합니다.</div>
+<div>그렇다면 사후 확률은 어떻게 게산할까요?</div>
+<div> </div>
+
+<blockquote>베이즈 정리</blockquote>
+</div>
+
+<p>앞서 설명한 결합 확률과 곱 규칙에 따라 베이즈 정리를 유도할 수 있습니다.</p>
+<figure><img alt="" loading="lazy" src="img05.png"/></figure>
+
+<p>위 식을 곱 규칙을 이용해 바꾸면 아래와 같습니다.</p>
+<figure><img alt="" loading="lazy" src="img06.png"/></figure>
+
+<p>위 식을 정리하면 아래와 같습니다. 아래 식은 2.2절에서 베이지안 분류기를 만드는 데 꼭 필요하므로 기억해야 합니다.</p>
+<figure><img alt="" loading="lazy" src="img07.png"/></figure>
+
+<p>베이즈 정리를 이용해 사후 확률을 계산해 보겠습니다.</p>
+<figure><img alt="" loading="lazy" src="img08.png"/></figure>
+
+<p>계산 결과 P(B|하양)이 더 큰 것을 알 수 있습니다. 따라서 하얀 공은 B에서 나왔을 가능성이 더 크다고 말할 수 있습니다.</p>
+<p>위의 결과에 따르면, 신뢰도 0.5625로 B에서 나왔다고 대답할 수도 있습니다. 이와 같인 <b>신뢰도</b>를 제공할 수 있는 것도 장점입니다.</p>
+<hr/>
+<p><b>  2.1.2 평균과 분산  </b></p>
+
+<blockquote>
+<div>평균 벡터와 공분산 행렬</div>
+</blockquote>
+
+<p><b>평균 벡터</b>를 구하는 식은 다음과 같습니다.</p>
+<figure><img alt="" loading="lazy" src="img09.png"/></figure>
+
+<p>R^d는 d 차원 실수 공간을 뜻합니다.</p>
+
+<p>랜덤 벡터의 i 번째 요소 xi의 분산도 필요하지만 xi와 xj 사이의 <b>공분산</b>도 중요한 통계적 특성입니다.</p>
+<p>공분산 행렬은 다음과 같습니다.</p>
+<figure><img alt="" loading="lazy" src="img10.png"/></figure>
+
+<p>공분산은 다음 식과 같이 구할 수 있습니다.</p>
+<figure><img alt="" loading="lazy" src="img11.png"/></figure>
+
+<p>공분산은 <b>랜덤 변수간의 관계</b>를 표현합니다.</p>
+<p>두 랜덤 변수가 같이 커지고 같이 작아지는 경향을 가졌다면 둘의 공분산은 양수를 갖고, 반대의 경우는 음수를 갖게 됩니다. 경향이 강할수록 값의 절댓값은 더 커집니다. 공분산이 0에 가까우면 상관 관계가 적다는 뜻입니다. 공분산이 0이면 두 변수는 독립입니다.</p>
+
+<blockquote>예제 2.3</blockquote>
+<div> </div>
+<div>8개 샘플이 주어진 상황에서 평균 벡터와 공분산 행렬을 구해봅시다.</div>
+<figure><img alt="" loading="lazy" src="img12.png"/></figure>
+
+<p>평균 벡터는 아래와 같습니다.</p>
+<figure><img alt="" loading="lazy" src="img13.png"/></figure>
+
+<p>공분산 행렬을 구하기 위해 첫 번째 샘플에 대한 예시를 보이겠습니다.</p>
+<figure><img alt="" loading="lazy" src="img14.png"/></figure>
+
+<p>8개의 샘플에 대해 모두 위의 과정을 반복하고 평균을 구하면 아래와 같은 공분산 행렬을 얻을 수 있습니다.</p>
+<figure><img alt="" loading="lazy" src="img15.png"/></figure>
+
+<hr/>
+<p><b>  2.1.3 확률 분포의 표현과 추정  </b></p>
+
+<blockquote>이산인 경우</blockquote>
+<div> </div>
+<div>변수의 수가 d이고 각 변수가 q개의 구간을 가진다면 q^d에 비례하는 메모리가 필요하기 때문에 차원의 저주를 만납니다.</div>
+<div> </div>
+<div> </div>
+<blockquote>연속인 경우<br/></blockquote>
+<div><figure><img alt="" loading="lazy" src="img16.png"/></figure>
+<p>(a) 같은 정규 분포에서는 평균과 분산만 설정하면 근사화해서 표현할 수 있고 차원의 저주를 피할 수 있습니다.</p>
+<p>하지만 (b)와 같이 세개의 모드*를 가진 확률 분포라면 간단히 표현할 수 없는 문제가 있고 이 문제는 3장에서 다뤄집니다.</p>
+
+<p>* 모드 mode: 최빈값</p>
+<hr/>
+<p>이후 내용과 ppt는 새로운 글로 쓰도록 하겠습니다.</p>
+
+<p>출처:</p>
+<p>패턴인식 - 오일석</p>
+</div>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#베이즈</span><span>#사후확률</span><span>#수학</span><span>#오일석</span><span>#통계</span><span>#패턴인식</span><span>#확률</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[컴퓨터구조] 1-3. Performance | Minseo Kim</title>
+  <meta name="description" content="Defining Performance 무엇을 기준으로 하느냐에 따라 성능이 다름 Response Time as Performance 개별 유저 기준으로 본다 컴퓨터 X에 대한 퍼포먼스 성능X = 1 / 실행 시간 X X와 Y 비교 성능 시간 좋은 쪽이 실행 시간 짧다 X is n tim" />
+  <meta property="og:title" content="[컴퓨터구조] 1-3. Performance | Minseo Kim" />
+  <meta property="og:description" content="Defining Performance 무엇을 기준으로 하느냐에 따라 성능이 다름 Response Time as Performance 개별 유저 기준으로 본다 컴퓨터 X에 대한 퍼포먼스 성능X = 1 / 실행 시간 X X와 Y 비교 성능 시간 좋은 쪽이 실행 시간 짧다 X is n tim" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" onload="hljs.highlightAll()"></script>
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=Computer%20S%26E/%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B5%AC%EC%A1%B0">Computer S&amp;E/컴퓨터구조</a>
+      <h1>[컴퓨터구조] 1-3. Performance</h1>
+      <time datetime="2022-10-25">2022.10.25</time>
+    </header>
+    <article class="post-body">
+<h1>Defining Performance</h1>
+<p>무엇을 기준으로 하느냐에 따라 성능이 다름</p>
+<h1>Response Time as Performance</h1>
+<p>개별 유저 기준으로 본다</p>
+<ul>
+<li>컴퓨터 X에 대한 퍼포먼스</li>
+</ul>
+<p>성능X = 1 / <b>실행 시간</b>X</p>
+<ul>
+<li>X와 Y 비교</li>
+</ul>
+<p>성능 시간 좋은 쪽이 실행 시간 짧다</p>
+<ul>
+<li>X is <b>n</b> times faster than Y</li>
+</ul>
+<p>성능X / 성능Y = 실행 시간Y / 실행 시간X</p>
+<pre><code data-lang="applescript"># Question
+
+A program 10s on A, 15s on B
+
+**How much faster is A than B?**
+
+# Solution
+
+**A가 B보다 1.5배 빠르다**
+</code></pre>
+<h1>수행 시간 측정</h1>
+<h3>경과 시간</h3>
+<p>한 작업을 끝내는 데 필요한 전체 시간</p>
+<p>디스크 접근, 메모리 접근, 입출력 작업, 운영체제 오버헤드 등 모든 시간을 다 더한 것</p>
+<h3>CPU 시간</h3>
+<p>입출력이나 다른 프로그램을 실행하는 데 걸린 시간은 포함되지 않음</p>
+<p>→ 우리는 <b>CPU 시간</b>으로 성능을 정의</p>
+<h1>Clock Cycle as Performance</h1>
+<p>클럭의 시간 간격</p>
+<h3>클럭 주기 period</h3>
+<p>한 클럭 사이클에 걸리는 시간</p>
+<p>ex) 250ps</p>
+<h3>클럭 속도 rate</h3>
+<p>클럭 주기의 역수</p>
+<p>ex) 4GHz</p>
+<h1>CPU Performance</h1>
+<p>프로그램에 대한 CPU 사용 시간</p>
+<p>= cycle 개수 * 한 번 cycle 도는 데 몇 초</p>
+<p>= cycle 개수 / clock rate 클럭 속도</p>
+<pre><code data-lang="routeros"># Question
+
+Com A: 2GHz clock rate, 10s CPU time
+Com B: 1.2 times clock cycles, 6s CPU time
+
+**What is the clock rate of com B?**
+
+# Solution
+
+****A: 10s = &lt;cycles&gt; / 2GHz
+cycles = 10s * 2GHz
+
+B: 6s = 1.2 * 10 * 2GHz / &lt;rate&gt;
+rate = 1.2 * 10 * 2GHz / 6s = **4GHz**
+</code></pre>
+<p>CPI: 명령 하나 수행하는 데 걸린 clock cycles 수</p>
+<p>CPU clock cycle 수 = 프로그램의 명령어 수 * 명령어 하나 당 clock cycle 수 (CPI)</p>
+<ul>
+<li>프로그램에 대한 명령어 수</li>
+<li>프로그램, ISA, 컴파일러로 결정</li>
+<li>명령어 하나 당 평균 사이클 수</li>
+<li>CPU hardware로 결정</li>
+</ul>
+<p>CPU time</p>
+<p>= 명령어 수 * CPI * clock cycle time</p>
+<p>= 명령어 수 * CPI / clock rate</p>
+<p>Time = 초 / 프로그램</p>
+<p>= 명령어 수 / 프로그램 * 사이클 수 / 명령어 수 * 초 / 사이클 수</p>
+<pre><code data-lang="routeros">A: clock cycle time = 250ps, CPI = 2.0
+B: clock cycle time = 500ps, CPI = 1.2
+Two computers have the same ISA
+
+**Which computer is faster, and how much?**
+
+CPU time
+= instruction count * CPI * cycle time
+
+A = I * 2 * 250ps = I * 500ps
+B = I * 1.2 * 500ps = I * 600ps
+
+**A가 1.2배 빠르다**
+</code></pre>
+<pre><code data-lang="yaml">&lt;   &gt; &lt;CPI for each instruction class&gt;
+&lt;   &gt; &lt;A&gt; &lt;B&gt; &lt;C&gt;
+&lt;CPI&gt; &lt;1&gt; &lt;2&gt; &lt;3&gt;
+
+&lt;    &gt; &lt;Instruction counts for each instruction class&gt;
+&lt;Code&gt; &lt;A&gt; &lt;B&gt; &lt;C&gt;
+&lt; 1 &gt;  &lt;2&gt; &lt;1&gt; &lt;2&gt;
+&lt; 2 &gt;  &lt;4&gt; &lt;1&gt; &lt;1&gt;
+
+**Which code executes more instructions?**
+
+Code 1: 2 + 1 + 2 = 5
+Code 2: 4 + 1 + 1 = 6
+**instruction 수는 2가 더 많다
+
+Which one is faster?**
+
+Code 1: 2 + 2 + 6 = 10
+Code 2: 4 + 2 + 3 = 9
+**속도는 2가 더 빠르다
+
+What is the CPI for each code?
+
+Code 1: 10 / 5 = 2
+Code 2: 9 / 6 = 1.5**
+</code></pre>
+<h1>Understanding Program Performance</h1>
+<p>알고리즘, 프로그래밍 언어, 컴파일러 → instruction count, CPI에 영향</p>
+<p>ISA → instruction count, CPI, <b>clock rate</b>에 영향</p>
+<p>왜냐햐면, 어떤 ISA를 쓸건지 보고 clock rate를 설계하기 때문</p>
+<h1>Power Wall</h1>
+<p>스위칭 빈도는 clocrk rate에 비례</p>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#computerarchitecture</span><span>#performance</span><span>#컴퓨터구조</span><span>#컴퓨터성능</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

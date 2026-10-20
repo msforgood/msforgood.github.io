@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[Hadoop] Overview of Hadoop, MapReduce 하둡 - 맵리듀스 | Minseo Kim</title>
+  <meta name="description" content="Small Talk 빅데이터 처리 순서: Acquisition (취득) - Storage (저장) - Analysis (분석) - Access (접근) 빅데이터에 Hadoop이 필요한 이유 Apache Hadoop: MapReduce 모델을 사용하기 위해 빅데이터 세트의 분산 저장 및 " />
+  <meta property="og:title" content="[Hadoop] Overview of Hadoop, MapReduce 하둡 - 맵리듀스 | Minseo Kim" />
+  <meta property="og:description" content="Small Talk 빅데이터 처리 순서: Acquisition (취득) - Storage (저장) - Analysis (분석) - Access (접근) 빅데이터에 Hadoop이 필요한 이유 Apache Hadoop: MapReduce 모델을 사용하기 위해 빅데이터 세트의 분산 저장 및 " />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" onload="hljs.highlightAll()"></script>
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=Computer%20S%26E/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0">Computer S&amp;E/빅데이터</a>
+      <h1>[Hadoop] Overview of Hadoop, MapReduce 하둡 - 맵리듀스</h1>
+      <time datetime="2022-10-26">2022.10.26</time>
+    </header>
+    <article class="post-body">
+<h1>Small Talk</h1>
+<p>빅데이터 처리 순서: Acquisition (취득) - Storage (저장) - Analysis (분석) - Access (접근)</p>
+<h1>빅데이터에 Hadoop이 필요한 이유</h1>
+<p>Apache Hadoop: MapReduce 모델을 사용하기 위해 빅데이터 세트의 분산 저장 및 처리에 사용되는 오픈 소스 소프트웨어 프레임워크</p>
+<p><b>commodity hardware</b>로 구성 - 쉽게 볼 수 있는 machine</p>
+<h2>데이터 저장 및 분석</h2>
+<p>단일 드라이브에서 모든 데이터를 읽고 쓰는데 오랜 시간이 걸린다</p>
+<p>→ 여러 디스크에서 한 번에 분할 데이터를 읽자</p>
+<p>사용자는 분석 시간을 단축하는 대신 여러 드라이브에서 접근을 공유할 수 있어야 한다</p>
+<p>여기서 <b>문제</b></p>
+<ol>
+<li>하드웨어 오류: 드라이브 하나에 오류가 발생할 가능성 높음</li>
+<li>99개 드라이브의 출력을 올바르게 결합하기 어렵다.</li>
+</ol>
+<p><b>해결</b></p>
+<ol>
+<li>HDFS: Hadoop Distributed File System 저장소</li>
+<li>MapReduce: 그걸 불러와서 쓰는거</li>
+</ol>
+<h2>모든 데이터 쿼리</h2>
+<ul>
+<li>batch query processor</li>
+<li>whole dataset에 대해 임시 쿼리를 실행</li>
+</ul>
+<h1>MapReduce</h1>
+<p>클러스터에서 병렬 분산 알고리즘을 사용하여 빅데이터를 처리 및 생성하기 위한 프로그래밍 모델 및 관련 구현</p>
+<p><b>Map</b>: 필터링, 정렬</p>
+<p><b>Reduce</b>: summary operation 요약 작업</p>
+<h2>Programming model</h2>
+<pre><code data-lang="cs">public void map (LongWritable key, Text value,
+		OuputCollector&lt;Text, LongWritable&gt; out, Reporter r)
+{
+	firstname.set(value.toString().split(”\\t”)[1];
+	ouput.collect(firstname, ONE);  # mapper → reducer 보내는 함수
+}
+</code></pre>
+<pre><code data-lang="arduino">public void reduce (Text key, Iterator&lt;LongWritable&gt; vals,  # list
+		OuputCollector&lt;Text, LongWritable&gt; out, Reporter r)
+{
+	long s = 0;
+	while (vals.hasNext())
+		s += vals.next().get();
+	sum.set(s);
+	output.collect(ley, sum);
+}
+</code></pre>
+<h3>ex.</h3>
+<p>mapper: 같은 이름인지 check해서 key - 이름 / value - 1</p>
+<p>reducer: 같은 키에 맞춰서 같은 reducer로 할당, 숫자 sum up</p>
+<p>이때 John(1,1,1)으로 저장하지 않고 John 3으로 저장</p>
+<p>Network로 연결하기 때문에 송/수신 효율을 생각해야 함</p>
+<h3>Data Locality</h3>
+<p>mapper가 필요할 data를 예상해서 할당, computation 낮추기 위함</p>
+<h3>Batch</h3>
+<p><b>batch</b> / streaming: data를 모아서 <b>한꺼번에</b> / 실시간</p>
+<p>hadoop은 batch 형식, 일괄 처리 시스템,</p>
+<p>Trade-offs를 가진다</p>
+<h3>Trade-offs</h3>
+<p><b>대화형 SQL</b>으로는 어려움, 한 번에 묶어서 처리</p>
+<p><b>Iterative (반복) 처리</b> ex. 머신 러닝</p>
+<p>top-wordcount: Hadoop은 word 다 세고 줄 세우기 한 번 더 하는 방식</p>
+<p><b>Streaming 처리</b> ex. 실시간</p>
+<h2>Hadoop Ecosystem</h2>
+<h3>HBase</h3>
+<p>HDFS의 <b>칼럼 기반</b> 데이터베이스</p>
+<p>구글의 BigTable 논문을 기반으로 개발된 것으로, 실시간 랜덤 조회 및 업데이트가 가능하며, 각각의 프로세스들은 개인의 데이터를 비동기적으로 업데이트 할 수 있다. 단, MapReduce는 일괄처리 방식으로 수행된다.</p>
+<h3>Pig</h3>
+<p>복잡한 MapReduce 프로그래밍을 대체할 Pig Latin이라는 자체 언어를 제공.</p>
+<p>MapReduce API를 매우 단순화시키고 <b>SQL과 유사한 형태</b>로 설계되었다.</p>
+<h3>Cascading</h3>
+<p>데이터 분석 및 관리(rich Data Analytics and Data Management) 어플리케이션을 쉽고 빠르게 개발할 수 있게 돕는 자바 기반의 어플리케이션 프레임워크</p>
+<h3>Hive</h3>
+<p>하둡 기반의 데이터 웨어하우징 솔루션</p>
+<p>페이스북에서 만든 오픈소스로, SQL과 매우 유사한 HiveQL이라는 쿼리를 제공한다. 그래서 자바를 잘 모르는 데이터 분석가들도 쉽게 하둡 데이터를 분석할 수 있게 도와준다.</p>
+<p>HiveQL은 내부적으로 MapReduce job으로 변환되어 실행된다.</p>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#hadoop</span><span>#빅데이터</span><span>#하둡</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

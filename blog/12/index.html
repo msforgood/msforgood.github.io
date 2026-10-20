@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[Hadoop] 하둡 기본 기초 Basics 설명 1 | Minseo Kim</title>
+  <meta name="description" content="RDMS: 대규모 데이터를 빠르게 조회 HDFS 클라이언트들이 바라봤을 때 끊기지 않게 string access seek time / transfer rate : 탐색 시간 / 대역폭 대역폭이 커진 속도를 탐색 시간이 못 따라잡았다 latency : 데이터를 읽으려고 할 때 hadoop" />
+  <meta property="og:title" content="[Hadoop] 하둡 기본 기초 Basics 설명 1 | Minseo Kim" />
+  <meta property="og:description" content="RDMS: 대규모 데이터를 빠르게 조회 HDFS 클라이언트들이 바라봤을 때 끊기지 않게 string access seek time / transfer rate : 탐색 시간 / 대역폭 대역폭이 커진 속도를 탐색 시간이 못 따라잡았다 latency : 데이터를 읽으려고 할 때 hadoop" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=Computer%20S%26E/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0">Computer S&amp;E/빅데이터</a>
+      <h1>[Hadoop] 하둡 기본 기초 Basics 설명 1</h1>
+      <time datetime="2022-09-30">2022.09.30</time>
+    </header>
+    <article class="post-body">
+<p>RDMS: 대규모 데이터를 빠르게 조회</p>
+
+<p>HDFS</p>
+
+<p>클라이언트들이 바라봤을 때 끊기지 않게</p>
+<p>string access</p>
+
+<p>seek time / transfer rate : 탐색 시간 / 대역폭</p>
+<p>대역폭이 커진 속도를 탐색 시간이 못 따라잡았다</p>
+
+<p>latency : 데이터를 읽으려고 할 때 hadoop은 processing 시간이 필요</p>
+
+<p>seek time이 줄어</p>
+<p>디스크 블럭 사이즈가 작아지면 디스크 공간 효율은 좋아지는데 병목</p>
+<p>디스크 블럭 사이즈가 작아지면 main node가 데이터를 많이 읽어와야 함</p>
+
+<p>B-Tree (RDMS) vs MapReduce</p>
+
+<p>structured data - csv / RDMS 관리 용이 </p>
+<p>semi-strucured data - json / Hadoop에서 관리</p>
+<p>unstructured data - image, video / Hadoop에서 관리</p>
+
+<p>Normalization 정규화 : 중복이나 불일치를 줄이기 위해 테이블 쪼갠다</p>
+<p>Not Normalization 비정규화 : 더 빠르고 쉬운 검색을 위해 테이블 통합</p>
+
+<figure><img alt="" loading="lazy" src="img01.png"/></figure>
+
+<p>수강과목이 하나도 없는 학생의 정보 자체가 사라질 수 있음</p>
+<p>-&gt; 학생 정보 테이블과 과목 테이블을 분리하는 정규화</p>
+
+<p>scaling out / up : 가로 방향으로, 동일한 데이터들이 많아지는 것 / 하드웨어의 기술 자체를 향상 시킴</p>
+
+<figure><img alt="" loading="lazy" src="img02.png"/></figure>
+
+<p>update: 여러 번 쓰고 여러번 읽음 / 한 번만 쓰고 여러번 읽는 과정, 중간 데이터 수정하지 않음</p>
+<p>Hadoop과 RDBM의 차이가 모호해짐</p>
+
+
+<p>Hadoop 이름 origin: the name his kid gave a stuffed yellow elephant</p>
+
+<p>parallel 하게 돌릴 때 어려움</p>
+<p>1. 데이터를 같은 사이즈로 나누는 것 어려움</p>
+<p>2. 결과값 취합</p>
+<p>3. 싱글 머신의 용량 제한</p>
+
+<p>reducer 2개</p>
+<p>-&gt; key 값이 2개로 분산(partition)</p>
+<p>partition은 hash func 사용</p>
+
+<p>combiner</p>
+<p>local reducer, output 자체에서 한 번 더 연산해서 reducer로 넘김</p>
+
+<p>map에서 넘긴 data를 shuffle하고 combine</p>
+
+<p>mapper 상속</p>
+<p>input output data type</p>
+<p>java의 data type은 너무 무거워서 hadoop이 자체 제작</p>
+<p>long - longwr, str - text</p>
+
+<p>파일 경로가 중복되면 얄짤 없이 예외 처리</p>
+<p>덮어 써주지 않음, 데이터 손실 막기 위해서</p>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#빅데이터</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

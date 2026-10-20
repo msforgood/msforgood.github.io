@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog | Minseo Kim</title>
+  <meta name="description" content="Minseo Kim의 블로그. 머신러닝과 컴퓨터공학." />
+  <meta property="og:title" content="Blog | Minseo Kim" />
+  <meta property="og:description" content="Minseo Kim의 블로그. 머신러닝과 컴퓨터공학." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../assets/style.css" />
+  <link rel="stylesheet" href="../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../">Home</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="blog container">
+    <header class="blog-head">
+      <h1>Blog</h1>
+      <p>공부하고, 만들고, 겪은 것들. <span class="count">42 posts</span></p>
+    </header>
+    <div class="chips" role="group" aria-label="카테고리"><button type="button" data-cat="" aria-pressed="true">전체</button><button type="button" data-cat="Computer S&amp;E/빅데이터" aria-pressed="false">빅데이터</button><button type="button" data-cat="Computer S&amp;E/컴퓨터구조" aria-pressed="false">컴퓨터구조</button><button type="button" data-cat="Computer S&amp;E/하다-보니" aria-pressed="false">하다-보니</button><button type="button" data-cat="머신러닝/LG Aimers" aria-pressed="false">LG Aimers</button><button type="button" data-cat="머신러닝/기초 공부" aria-pressed="false">기초 공부</button><button type="button" data-cat="머신러닝/논문 공부" aria-pressed="false">논문 공부</button></div>
+    <ul class="post-list">
+      <li data-cat="Computer S&amp;E/하다-보니"><a href="59/"><time>2025.03.19</time><strong>[AWS] CodeDeploy 배포 그룹 환경 구성 - 태그 지정</strong><span class="excerpt">태그를 통해서 인스턴스들을 지정해 주고 있다. 당연히 Dev가 false 이고(AND) Type이 w인 인스턴스를 판별할 줄 알았는데 이렇게 지정하면 OR 조건이었다. 태그 그룹을 추가해서 이렇게 지정해야 AND 조건을 만들어 줄 수 있다. 헷갈리면 일치하는 인스턴스 [자세한 내용을 보</span><span class="cat">Computer S&amp;E/하다-보니</span></a></li>
+      <li data-cat="Computer S&amp;E/하다-보니"><a href="58/"><time>2025.03.18</time><strong>Error: A require() style import is forbidden.  @typescript-eslint/no-require-imports</strong><span class="excerpt">TypeScript에서는 require() 방식의 import를 권장하지 않음 대신 import 문법을 사용하는 것이 일반적 해결 방법 1: import 사용 import mysql from &quot;mysql2/promise&quot;; const pool = mysql.createPool({ hos</span><span class="cat">Computer S&amp;E/하다-보니</span></a></li>
+      <li data-cat="Computer S&amp;E/하다-보니"><a href="57/"><time>2025.03.18</time><strong>Error: Component definition is missing display name react/display-name</strong><span class="excerpt">이 오류는 forwardRef를 사용하여 생성한 TableRowCustom 컴포넌트가 display name이 없기 때문에 발생합니다. React에서는 forwardRef를 사용할 때 컴포넌트의 이름을 명시적으로 설정하는 것이 권장됩니다. 해결 방법 displayName을 설정하면 해결</span><span class="cat">Computer S&amp;E/하다-보니</span></a></li>
+      <li data-cat="Computer S&amp;E/하다-보니"><a href="56/"><time>2025.03.18</time><strong>Next.js &amp; Prisma 실행 오류 해결하기 (Permission Denied)</strong><span class="excerpt">$ npm run build &gt; {프로젝트명}@2.0.0 build &gt; next build sh: 1: next: Permission denied $ npx prisma generate sh: 1: prisma: Permission denied 728x90 rm -rf node_modu</span><span class="cat">Computer S&amp;E/하다-보니</span></a></li>
+      <li data-cat="Computer S&amp;E/하다-보니"><a href="55/"><time>2025.03.18</time><strong>[AWS] EC2 (User Data / rc.local) 부팅 시 CodeDeploy 자동 적용하는 법</strong><span class="excerpt">일이 있을 때만 켜지는 10개의 ec2 그룹이 있다. 평소 꺼져 있다 보니 git action - code deploy 자동화가 적용되지 않는다. (인스턴스가 중지되어 있을 때는 code deploy가 안됨) 아이디어: 켜지자마자 최근 deploy를 재배포 받으면 되지 않을까? 실행1:</span><span class="cat">Computer S&amp;E/하다-보니</span></a></li>
+      <li data-cat="머신러닝/논문 공부"><a href="53/"><time>2023.08.17</time><strong>[논문 공부] YourTTS - Voice Cloning</strong><span class="excerpt">VITS 기반 음소 대신 raw text 사용 multi-language에서 좋음(음소 별로 소리를 예측할 수 없는 문자에 대해 좋은 성능) ENCODER(text -&gt; embedding): transformer 기반 text encoder multi-language를 위해 각 inpu</span><span class="cat">머신러닝/논문 공부</span></a></li>
+      <li data-cat="Computer S&amp;E/하다-보니"><a href="52/"><time>2023.07.28</time><strong>[Flutter] 환경 변수 설정했는데 flutter doctor가 안 먹힐 때</strong><span class="excerpt">$ flutter doctor &#x27;flutter&#x27; is not recognized as an internal or external command, operable program or batch file. cmd 창을 껐다 다시 켜면 된다~</span><span class="cat">Computer S&amp;E/하다-보니</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="47/"><time>2023.06.28</time><strong>[Python to AI] 딥러닝이 이미지를 처리하는 방법, CNN을 이용한 Detection (Competition) - week 7, 8</strong><span class="excerpt">딥러닝이 이미지를 처리하는 방법 1. Classification 2. Detection 둘은 어떻게 다를까? Classification (분류): 목표: 이미지를 사전 정의된 클래스 레이블 중 하나로 할당하는 것. 접근 방식: 이미지의 전체적인 내용을 이해하고, 이미지에 포함된 개체 또</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="46/"><time>2023.06.21</time><strong>[Python to AI] 딥러닝이 이미지를 처리하는 방법, CNN을 이용한 Classification (Competition) - week 5, 6</strong><span class="excerpt">딥러닝이 이미지를 처리하는 방법 1. Classification 2. Segmentation 둘은 어떻게 다를까? Classification (분류): 목표: 이미지를 사전 정의된 클래스 레이블 중 하나로 할당하는 것. 접근 방식: 이미지의 전체적인 내용을 이해하고, 이미지에 포함된 개</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="45/"><time>2023.06.14</time><strong>[Python to AI] 하이퍼 파라미터 최적화 - week 4</strong><span class="excerpt">Learning rate &amp; Epochs &gt; California housing data https://colab.research.google.com/drive/1_5z1D7U_SyW1eb9aec3Xc-eYNUrQEFRb?usp=sharing Optimizer &gt; MNIST data ht</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="42/"><time>2023.05.30</time><strong>[Python to AI] 딥러닝의 성능을 올려준 기술들 - week 3</strong><span class="excerpt">목차 간단한 신경망 tensorflow로 구현하기 다층 퍼셉트론 활성 함수 손실 함수 Overfitting / Underfitting 옵티마이저 데이터 전처리 하이퍼 파라미터 간단한 신경망 tensorflow로 구현하기 https://colab.research.google.com/dri</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="40/"><time>2023.01.16</time><strong>[확률/통계] 2-5/6. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석)</strong><span class="excerpt">이전 글을 못 보신 분들께 추천 드립니다. 2023.01.11 - [딥러닝/기초 공부] - [확률/통계] 2-1. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석) 2023.01.13 - [딥러닝/기초 공부] - [확률/통계] 2-2. 베이지안 결정 이론 + ppt, 연습</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="39/"><time>2023.01.16</time><strong>[확률/통계] 2-4. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석)</strong><span class="excerpt">이전 글을 보고 오시지 않은 분들께 추천드립니다. 2023.01.11 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 1 + ppt, 연습문제 (패턴인식 - 오일석) 2023.01.13 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 2 + ppt</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="38/"><time>2023.01.13</time><strong>[확률/통계] 2-3. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석)</strong><span class="excerpt">이전 글을 보고 오시지 않은 분들께 추천드립니다. 2023.01.11 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 1 + ppt, 연습문제 (패턴인식 - 오일석) 2023.01.13 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 2 + ppt</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="37/"><time>2023.01.13</time><strong>[확률/통계] 2-2. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석)</strong><span class="excerpt">이전 편을 보지 않고 오신 분들께 1편을 추천 드립니다. 2023.01.11 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 1 + ppt, 연습문제 (패턴인식 - 오일석) [확률/통계] 2. 베이시언 결정 이론 1 + ppt, 연습문제 (패턴인식 - 오일석) Int</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="35/"><time>2023.01.11</time><strong>[확률/통계] 2-1. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석)</strong><span class="excerpt">Intro 사람은 무언가를 인식할 때 가능성을 따집니다. 판단이 확실하지 않으면 가장 그럴듯한 쪽으로 인식합니다. 따라서 패턴 인식 시스템도 이 법칙을 따르지 않을 수 없습니다. 하지만 기계와 사람은 다릅니다. 사람은 판단에 느낌을 동원하지만 컴퓨터는 그럴 수 없습니다. 프로그래밍을 위</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/논문 공부"><a href="32/"><time>2023.01.10</time><strong>[논문 리뷰] NeRF (ECCV 2020) : NeRF 최초 제안 논문</strong><span class="excerpt">NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis INR 분야에 관심이 생겨 INR의 기초를 공부할 수 있는 논문을 찾다가 이번 논문을 공부하게 되었습니다 NeRF는 몇 개 point에서의 2D 이미지만으로도 </span><span class="cat">머신러닝/논문 공부</span></a></li>
+      <li data-cat="머신러닝/LG Aimers"><a href="31/"><time>2023.01.08</time><strong>[LG Aimers] &lt;품질과 신뢰성&gt; 2 - SPC의 필요성과 개념</strong><span class="excerpt">해당 글은 LG에서 지원하는 LG Aimers의 교육 내용을 정리한 것으로, 모든 출처는 https://www.lgaimers.ai/ 입니다. SPC Feed-Back 공정관리 시스템 SPC Statical Process Control 공정에서 요구되는 품질이나 생산성 목표를 달성하기 </span><span class="cat">머신러닝/LG Aimers</span></a></li>
+      <li data-cat="머신러닝/LG Aimers"><a href="30/"><time>2023.01.08</time><strong>[LG Aimers] &lt;품질과 신뢰성&gt; 1 - 품질 및 품질비용</strong><span class="excerpt">해당 글은 LG에서 지원하는 LG Aimers의 교육 내용을 정리한 것으로, 모든 출처는 https://www.lgaimers.ai/ 입니다. 품질이란? 품질의 개념 전통적 품질: 규격에 부합하는 것 품질을 보는 5가지 관점 - 선험적: 품질을 정의할 수는 없더라도 무엇인지 고객이 인지</span><span class="cat">머신러닝/LG Aimers</span></a></li>
+      <li data-cat="머신러닝/LG Aimers"><a href="29/"><time>2023.01.05</time><strong>[LG Aimers] &lt;AI 윤리&gt; 3 - 세계적인 데이터 과학자가 되는 방법</strong><span class="excerpt">해당 글은 LG에서 지원하는 LG Aimers의 교육 내용을 정리한 것으로, 모든 출처는 https://www.lgaimers.ai/ 입니다. 데이터 사이언티스트의 소양 기존 산업에서 디지털 전환 데이터에 대한 호기심 이종 데이터의 결합은 혁신을 가져옴 ex) 서울 버스 노선 예측 - </span><span class="cat">머신러닝/LG Aimers</span></a></li>
+      <li data-cat="머신러닝/LG Aimers"><a href="28/"><time>2023.01.05</time><strong>[LG Aimers] &lt;AI 윤리&gt; 2 - AI Ethics</strong><span class="excerpt">해당 글은 LG에서 지원하는 LG Aimers의 교육 내용을 정리한 것으로, 모든 출처는 https://www.lgaimers.ai/ 입니다. AI 관련 윤리와 신뢰 문제 AI and Creativity GAN -&gt; 창작 AI가 만든 첫 교향곡: Iamus - &quot;Hello World&quot; </span><span class="cat">머신러닝/LG Aimers</span></a></li>
+      <li data-cat="머신러닝/LG Aimers"><a href="27/"><time>2023.01.05</time><strong>[LG Aimers] &lt;AI 윤리&gt; 1 - 데이터 분석과 AI학습에서 유의할 점</strong><span class="excerpt">해당 글은 LG에서 지원하는 LG Aimers의 교육 내용을 정리한 것으로, 모든 출처는 https://www.lgaimers.ai/ 입니다. 데이터 처리 및 수집에서 윤리 이슈 데이터 해석 상관관계와 인과관계 구별하기 데이터 전처리 및 분석 도표에 Error bar 추가하기 적합한 통</span><span class="cat">머신러닝/LG Aimers</span></a></li>
+      <li data-cat="Computer S&amp;E/빅데이터"><a href="26/"><time>2022.11.09</time><strong>[빅데이터] 논문 리뷰 An Experimental Comparison of Pregel-like Graph Processing Systems</strong><span class="excerpt">Abstract 구글 프레겔의 등장은 대규모 그래프 데이터 처리 분야에 큰 관심을 불러일으켰고, 지난 2년 동안 등장한 Apache Giraph, GPS, Mizan, GraphLab과 같은 Pregel 유사 시스템 개발에 영감을 주었습니다. Pregel과 같은 시스템이 어떻게 작동하는</span><span class="cat">Computer S&amp;E/빅데이터</span></a></li>
+      <li data-cat="Computer S&amp;E/빅데이터"><a href="24/"><time>2022.10.26</time><strong>[Hadoop] Overview of Hadoop, MapReduce 하둡 - 맵리듀스</strong><span class="excerpt">Small Talk 빅데이터 처리 순서: Acquisition (취득) - Storage (저장) - Analysis (분석) - Access (접근) 빅데이터에 Hadoop이 필요한 이유 Apache Hadoop: MapReduce 모델을 사용하기 위해 빅데이터 세트의 분산 저장 및 </span><span class="cat">Computer S&amp;E/빅데이터</span></a></li>
+      <li data-cat="Computer S&amp;E/빅데이터"><a href="23/"><time>2022.10.26</time><strong>[Hadoop] MapReduce Application</strong><span class="excerpt">java final → 뒤에 어떤 값이 들어와도 상수 취급 Job이 잘 돌아가는지 확인을 먼저 하고 cluster에 돌리는게 낫다 cluster에 바로 돌리는건 heavy하니까 local로 먼저 test → configuration의 이유 -conf 옵션 주기 위해서 configurat</span><span class="cat">Computer S&amp;E/빅데이터</span></a></li>
+      <li data-cat="Computer S&amp;E/빅데이터"><a href="22/"><time>2022.10.26</time><strong>[Hadoop] 논문 리뷰 MapReduce: Simplified Data Processing on Large Clusters</strong><span class="excerpt">Intro 데이터의 양 증가 large-scale의 데이터들(raw data, web request logs, crawled documents, etc..) 분산된 시스템에서 데이터를 처리하고 배포하는 방법 → MapReduce = Map+ Reduce 사용자가 쉽게 사용할 수 있는 자</span><span class="cat">Computer S&amp;E/빅데이터</span></a></li>
+      <li data-cat="Computer S&amp;E/빅데이터"><a href="21/"><time>2022.10.25</time><strong>[Hadoop] hadoop에서의 straggler</strong><span class="excerpt">Straggler란 map 또는 reduce 작업 중 하나를 완료하는데 비정상적으로 오랜 시간이 걸리는 machine MapReduce 작업에 소요되는 총 시간을 늘리는 일반적인 원인 중 하나가 straggler 낙오자는 여러 가지 이유로 발생 가능 ex. 불량 디스크가 있는 시스템 낙</span><span class="cat">Computer S&amp;E/빅데이터</span></a></li>
+      <li data-cat="Computer S&amp;E/컴퓨터구조"><a href="20/"><time>2022.10.25</time><strong>[컴퓨터구조] 1-3. Performance</strong><span class="excerpt">Defining Performance 무엇을 기준으로 하느냐에 따라 성능이 다름 Response Time as Performance 개별 유저 기준으로 본다 컴퓨터 X에 대한 퍼포먼스 성능X = 1 / 실행 시간 X X와 Y 비교 성능 시간 좋은 쪽이 실행 시간 짧다 X is n tim</span><span class="cat">Computer S&amp;E/컴퓨터구조</span></a></li>
+      <li data-cat="Computer S&amp;E/컴퓨터구조"><a href="19/"><time>2022.10.13</time><strong>[컴퓨터구조] 1-2. Computer Organization</strong><span class="excerpt">Classes of Computers PCs 개인을 위해, 가장 잘 알려진 컴퓨터 형태, 단일 유저, 낮은 가격 , third-party(제3자) software ** first: 직접 만듦, sec: 외주, third: 아무나 Servers 큰 프로그램, 여러 유저, 네트워크 통해서만</span><span class="cat">Computer S&amp;E/컴퓨터구조</span></a></li>
+      <li data-cat="Computer S&amp;E/컴퓨터구조"><a href="17/"><time>2022.10.12</time><strong>[컴퓨터구조] 1-1. Introduction</strong><span class="excerpt">참고 책 : Computer Organization and Design The Hardware/Software Interface 5th 1장. 컴퓨터 추상화 및 관련 기술 - 2장. 명령어: 컴퓨터 언어 - 3장. 컴퓨터 연산 - 4장. 프로세서 - 5장. 메모리 계층구조 - 6장. 병</span><span class="cat">Computer S&amp;E/컴퓨터구조</span></a></li>
+      <li data-cat="Computer S&amp;E/빅데이터"><a href="16/"><time>2022.10.07</time><strong>[Hadoop] MapReduce: Simplified Data Processing on Large Clusters 논문</strong><span class="excerpt">병렬 구조 처리 ouput은 로컬 머신이 아니라 key-value pair는 local machine에 저장, worker가 그것을 받아서 output 저장</span><span class="cat">Computer S&amp;E/빅데이터</span></a></li>
+      <li data-cat="Computer S&amp;E/빅데이터"><a href="15/"><time>2022.10.07</time><strong>[Hadoop] 하둡 기본 기초 Basics 설명 2</strong><span class="excerpt">Design of HDFS - 큰 파일을 저장할 수 있다 - Streaming data access pattern : 사용자에게 끊기지 않고 데이터를 읽을 수 있게 해준다. 하드웨어에서 데이터 손실이 나더라도 그 손실을 느끼지 않게. 한 번 쓰고, 여러번 읽는다는 컨셉. - Commod</span><span class="cat">Computer S&amp;E/빅데이터</span></a></li>
+      <li data-cat="머신러닝/논문 공부"><a href="14/"><time>2022.10.06</time><strong>[딥러닝/CNN] Pre-activation ResNet</strong><span class="excerpt">계속 기울기 1이다 -&gt; 아님 그 부분에도 계속 ReLU가 씌워지기 때문 layer 1000개 쯤 쌓으면 학습이 안 된다. layer를 깊게 쌓았을 때 발생하는 문제점 해결하기 위한 논문 Fine Tuning 관점 code 구현 resnetv2.py</span><span class="cat">머신러닝/논문 공부</span></a></li>
+      <li data-cat="머신러닝/논문 공부"><a href="13/"><time>2022.10.06</time><strong>[논문 리뷰] ResNet 논문 리뷰</strong><span class="excerpt">+) ResNet이 1000장 정도 쌓이면 성능이 저하되는 문제를 해결하기 위한 추가 연구는 글 맨 아래에 있음 ResNet 마이크로소프트 팀이 소개한 ResNet 모델입니다. Residual 이라는 새로운 방법이 도입되었습니다. ILSVRC 2015에서 처음으로 Human recogn</span><span class="cat">머신러닝/논문 공부</span></a></li>
+      <li data-cat="Computer S&amp;E/빅데이터"><a href="12/"><time>2022.09.30</time><strong>[Hadoop] 하둡 기본 기초 Basics 설명 1</strong><span class="excerpt">RDMS: 대규모 데이터를 빠르게 조회 HDFS 클라이언트들이 바라봤을 때 끊기지 않게 string access seek time / transfer rate : 탐색 시간 / 대역폭 대역폭이 커진 속도를 탐색 시간이 못 따라잡았다 latency : 데이터를 읽으려고 할 때 hadoop</span><span class="cat">Computer S&amp;E/빅데이터</span></a></li>
+      <li data-cat="머신러닝/논문 공부"><a href="11/"><time>2022.09.29</time><strong>[딥러닝] GoogLeNet 논문 리뷰</strong><span class="excerpt">더보기 딥러닝 논문 리뷰 GoogLeNet 논문 리뷰 Inception ILSVRC 2014에서 VGGNet을 이기고 1등을 한 GoogLeNet 모델 VGGNet 과 유사한 점: 1 x 1 conv layer, depth 증가를 통해 성능 개선 GoogLeNet은 Inception이라</span><span class="cat">머신러닝/논문 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="10/"><time>2022.09.23</time><strong>[딥러닝] 기초 및 꿀팁 3</strong><span class="excerpt">Data Loader iteration: batch 한 번 다 돈 것 epoch: dataset 한 번 다 돈 것 - CustomDataset __init__(): image는 path, text는 text 자체로 저장 __getitem__(): __len__(): max=255 nor</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/논문 공부"><a href="9/"><time>2022.09.23</time><strong>[딥러닝/CNN] VGGNet 논문 리뷰</strong><span class="excerpt">더보기 딥러닝 논문 리뷰 VGGNet 논문 리뷰 Very Deep Convolutional Networks for Large-Scale Image Recognition ↑ 논문 링크 ↑ Abstract VGGNet은 ILSVRC 2014 대회에서 2등을 차지한 CNN 모델 모델의 성능에</span><span class="cat">머신러닝/논문 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="8/"><time>2022.09.15</time><strong>[딥러닝] 기초 및 꿀팁 2</strong><span class="excerpt">loss를 미분할 때 chain rule w.grad = dloss / dw loss(backward 당하는 객체)는 무조건 스칼라값이어야 함 c = 3 * a c = c.sum() c.backward() print(a.grad) =&gt; 3 self.linear = torch.nn.Lin</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="머신러닝/논문 공부"><a href="7/"><time>2022.09.15</time><strong>[딥러닝] AlexNet 논문 리뷰</strong><span class="excerpt">ImageNet Classification with Deep Convolutional Neural Networks ↑ 논문 링크 ↑ AlexNet 영상 데이터 베이스를 기반으로 한 인식 대회 &#x27;ILSVRC 2012&#x27;에서 우승한 CNN 구조 Neural network : 6천만 param</span><span class="cat">머신러닝/논문 공부</span></a></li>
+      <li data-cat="머신러닝/기초 공부"><a href="6/"><time>2022.09.13</time><strong>[딥러닝] 기초 및 꿀팁 1</strong><span class="excerpt">Lecture 1 ML: 사람이 직접 feature 생성 DL: feature도 모델이 생성 (end-to-end, input을 넣으면 무조건 ouput이 나오는) numpy: CPU 내에서만 수행 pytorch: GPU에서도 수행 torch.ones(3, 2) torch.zeros(3</span><span class="cat">머신러닝/기초 공부</span></a></li>
+      <li data-cat="Computer S&amp;E/컴퓨터구조"><a href="4/"><time>2022.09.08</time><strong>[컴퓨터구조] Performance</strong><span class="excerpt">어디에 중점을 두느냐에 따라 컴퓨터 성능이 달라진다 performance = 수행 시간의 역수 CPU time에 집중한다 - Clock cycle rising edge에서 data 전송. 다음 rising edge마다 state가 변한다 period: 주기, rate: period의 역</span><span class="cat">Computer S&amp;E/컴퓨터구조</span></a></li>
+    </ul>
+  </main>
+  <script>
+    (function () {
+      var chips = document.querySelectorAll(".chips button");
+      var items = document.querySelectorAll(".post-list li");
+      function apply(cat) {
+        chips.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.cat === cat)); });
+        items.forEach(function (li) { li.hidden = !!cat && li.dataset.cat !== cat; });
+      }
+      chips.forEach(function (b) {
+        b.addEventListener("click", function () {
+          apply(b.dataset.cat);
+          var u = new URL(location.href);
+          if (b.dataset.cat) u.searchParams.set("c", b.dataset.cat); else u.searchParams.delete("c");
+          history.replaceState(null, "", u);
+        });
+      });
+      apply(new URLSearchParams(location.search).get("c") || "");
+    })();
+  </script>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

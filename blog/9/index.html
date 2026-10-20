@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[딥러닝/CNN] VGGNet 논문 리뷰 | Minseo Kim</title>
+  <meta name="description" content="더보기 딥러닝 논문 리뷰 VGGNet 논문 리뷰 Very Deep Convolutional Networks for Large-Scale Image Recognition ↑ 논문 링크 ↑ Abstract VGGNet은 ILSVRC 2014 대회에서 2등을 차지한 CNN 모델 모델의 성능에" />
+  <meta property="og:title" content="[딥러닝/CNN] VGGNet 논문 리뷰 | Minseo Kim" />
+  <meta property="og:description" content="더보기 딥러닝 논문 리뷰 VGGNet 논문 리뷰 Very Deep Convolutional Networks for Large-Scale Image Recognition ↑ 논문 링크 ↑ Abstract VGGNet은 ILSVRC 2014 대회에서 2등을 차지한 CNN 모델 모델의 성능에" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/%EB%85%BC%EB%AC%B8%20%EA%B3%B5%EB%B6%80">머신러닝/논문 공부</a>
+      <h1>[딥러닝/CNN] VGGNet 논문 리뷰</h1>
+      <time datetime="2022-09-23">2022.09.23</time>
+    </header>
+    <article class="post-body">
+<details><summary>더보기</summary>
+<p>딥러닝 논문 리뷰 VGGNet 논문 리뷰</p>
+</details>
+<figure><img alt="" loading="lazy" src="img01.png"/></figure>
+
+<p><a href="https://arxiv.org/pdf/1409.1556.pdf" rel="noopener" target="_blank">Very Deep Convolutional Networks for Large-Scale Image Recognition</a></p>
+<p>↑ 논문 링크 ↑</p>
+<hr/>
+<h3>Abstract</h3>
+<p>VGGNet은 ILSVRC 2014 대회에서 2등을 차지한 CNN 모델</p>
+<p>모델의 성능에<b> '네트워크의 깊이'</b>가 중요함을 보여줌</p>
+<p>이미지 특징을 추출하는 기본 네트워크 모델로 활용<br/>많은 메모리를 이용하여 연산한다는 단점<br/></p>
+<hr/>
+<h3>ConvNet Configurations</h3>
+<h4>Architecture</h4>
+<figure><img alt="" loading="lazy" src="img02.jpg"/></figure>
+
+<p>Input은 224 x 224 RGB 이미지로 고정</p>
+<p>전처리 - 각 픽셀에서 train set 평균 RGB 값 빼기</p>
+<p>3 x 3 필터 ConvNet, 비선형성을 위해 1 x 1 convolutional filter, stride=1, padding 적용</p>
+<p>일부 conv layer에는 max-pooling layer(2 x 2, stride=2)</p>
+<p>마지막 Fully-connected layer(FC layer) 3개(4096, 4096, 1000)로 인해 많은 파라미터</p>
+<p>모든 활성화 함수는 ReLU</p>
+
+<p>-&gt; VGGNet의 단점: 파라미터 개수가 너무 많다</p>
+
+<h4>Configurations</h4>
+<p>11 ~ 19 깊이로 실험, channels은 각 max-pooling 이후 2배씩 증가하여 최대 512까지 증가</p>
+<figure><img alt="" loading="lazy" src="img03.png"/></figure>
+
+
+<h4>Discussion</h4>
+<ul>
+<li>기존 7 x 7 보다 작은 필터 (3 x 3, stride=1) 사용해서 파라미터 수 감소</li>
+</ul>
+<p>3 x 3 convolutional filter를 2개 이용하면 5 x 5, 3개 이용하면 7 x 7</p>
+
+<p>C개의 channel를 가진 3개의 3x3 filter를 이용하면 연산량은 27C^2,</p>
+<p>C 개의 channel를 가진 1개의 7x7 filter를 이용하면 연산량은 49C^2</p>
+
+<p>7 x 7 대신 3 x 3을 사용하면 3개의 relu를 이용 가능 (비선형성 증가), 파라미터 수 감소 (49 -&gt; 27, regularization 효과)</p>
+<p>+) 3 x 3 필터: 방향성을 보여줄 수 있는 필터 중 가장 작은</p>
+<p>+) 7 x 7 쓰는게 속도는 더 빠름, ReLU가 연산 느림</p>
+
+
+<ul>
+<li>1 x 1 conv later -&gt; 비선형성</li>
+</ul>
+<p>입출력 channel이 동일할 때 1 x 1 이용하면 ReLU 함수를 거치면서 비선형성 추가</p>
+<hr/>
+
+<h3>Classification Framework</h3>
+<h4>Training</h4>
+<p>momentum을 가진 mini-batch gradient descent</p>
+<p>batch size = 256, momentum = 0.9, weight decay = 0.00005, epoch = 74, learning rate = 0.01(10배씩 감소)</p>
+
+<ul>
+<li>pre-initialisation</li>
+</ul>
+<p>학습 속도 및 안정성에 영향</p>
+<p>가장 얕은 구조인 A를 먼저 학습, 이 때 가중치는 평균=0, 분산=0.01 정규 분포에서 무작위 추출</p>
+<p>첫 번째, 네 번째 conv layer와 FC layer 3개의 가중치를 이용해 다른 모델 학습</p>
+
+<p>-&gt; 더 적은 epoch로 학습</p>
+
+<p><i>논문 제출 후 Glorot&amp;Bengio (2010)의 무작위 초기화 절차를 이용하여 사전 훈련 없이 가중치를 초기화하는 것이 가능하다는 것을 알아냄</i></p>
+
+<ul>
+<li>data augmentation</li>
+</ul>
+<p>- crop 후 이미지를 수평 방향으로 무작위 뒤집기</p>
+<p>+) 수직 방향으로 뒤집기는 사진 특성상 잘 쓰지 않았음 (뒤집어진건 어색하니까)</p>
+<p>- RGB 값 무작위 변경</p>
+<p>- image rescaling</p>
+<p>single scale에서는 training scale(S) 256, 384 두 개로 고정</p>
+<p>multi scale에서는 input size를 256 ~ 512 범위로 무작위 resize, 이를 scale jittering 이라고 함</p>
+
+<p>-&gt; 데이터 수 증가로 overfitting 방지, 다양한 크기의 object 학습으로 정확도 향상</p>
+
+<h4>Testing</h4>
+<p>마지막 FC layers를 conv layers로 변환하여 사용 (7 x 7, 1 x 1, 1 x 1), 이를 Fully-convolutional networks라고 부름</p>
+<p>conv layer로만 구성되면 input size 제약이 없음, </p>
+
+<h4>Implementation Details</h4>
+<p>4-GPU system, 학습 시간 2-3주, single GPU 보다 3.75배 빠름</p>
+<hr/>
+<h3>Classification Experiments</h3>
+<p>Dataset: 1000개 클래스 이미지 (train - 1.3M, val - 50K, test - 1000K)</p>
+<p>실험에서는 val을 test로 이용</p>
+
+<h4>Single Scale Evaluation</h4>
+<figure><img alt="" loading="lazy" src="img04.png"/></figure>
+
+<ul>
+<li>AlexNet에서의 LRN은 효과 없음</li>
+<li>깊이가 깊어질 수록 error 감소</li>
+<li>3 x 3 2개가 5 x 5 1개보다 error 7% 낮음 (top-1 error 기준)</li>
+<li>256 ~ 512 다양한 scale로 resize 한 것이 고정된 scale 보다 성능 좋음</li>
+</ul>
+
+<h4>Multi Scale Evaluation</h4>
+<figure><img alt="" loading="lazy" src="img05.png"/></figure>
+
+<ul>
+<li>256 ~ 512 다양한 scale로 resize 한 것이 고정된 scale 보다 성능 좋음</li>
+<li>single scale 보다 multi scale 성능이 좋음</li>
+</ul>
+
+<h4>Multi Crop Evaluation</h4>
+<figure><img alt="" loading="lazy" src="img06.png"/></figure>
+
+<ul>
+<li>dense와 multi crop을 각각 적용했을 때는 grid 크기 문제로 multi crop이 성능이 좋음</li>
+<li>dense와 multi crop을 같이 적용하면 가장 성능이 좋음</li>
+</ul>
+
+<h4>ConvNet fusion</h4>
+<figure><img alt="" loading="lazy" src="img07.png"/></figure>
+
+<ul>
+<li>모델 7개를 앙상블 했을 때보다 모델 2개를 앙상블 했을 때 성능이 좋음</li>
+</ul>
+<hr/>
+<h3>Conclusion</h3>
+<p>모델이 깊어지니 (최대 19층) 성능이 좋아지더라</p>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#vggnet</span><span>#VGGNet논문</span><span>#논문리뷰</span><span>#딥러닝</span><span>#딥러닝논문</span><span>#딥러닝논문리뷰</span><span>#머신러닝</span><span>#인공지능</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

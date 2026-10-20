@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Error: Component definition is missing display name react/display-name | Minseo Kim</title>
+  <meta name="description" content="이 오류는 forwardRef를 사용하여 생성한 TableRowCustom 컴포넌트가 display name이 없기 때문에 발생합니다. React에서는 forwardRef를 사용할 때 컴포넌트의 이름을 명시적으로 설정하는 것이 권장됩니다. 해결 방법 displayName을 설정하면 해결" />
+  <meta property="og:title" content="Error: Component definition is missing display name react/display-name | Minseo Kim" />
+  <meta property="og:description" content="이 오류는 forwardRef를 사용하여 생성한 TableRowCustom 컴포넌트가 display name이 없기 때문에 발생합니다. React에서는 forwardRef를 사용할 때 컴포넌트의 이름을 명시적으로 설정하는 것이 권장됩니다. 해결 방법 displayName을 설정하면 해결" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" onload="hljs.highlightAll()"></script>
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=Computer%20S%26E/%ED%95%98%EB%8B%A4-%EB%B3%B4%EB%8B%88">Computer S&amp;E/하다-보니</a>
+      <h1>Error: Component definition is missing display name react/display-name</h1>
+      <time datetime="2025-03-18">2025.03.18</time>
+    </header>
+    <article class="post-body">
+<p>이 오류는 forwardRef를 사용하여 생성한 TableRowCustom 컴포넌트가 display name이 없기 때문에 발생합니다.</p>
+<p>React에서는 forwardRef를 사용할 때 컴포넌트의 이름을 명시적으로 설정하는 것이 권장됩니다.</p>
+
+<p><b>해결 방법</b></p>
+
+<p>displayName을 설정하면 해결됩니다.</p>
+<p>TableRowCustom.displayName = "TableRowCustom";을 추가하세요.</p>
+
+<pre><code>// 🔹 displayName 추가 TableRowCustom.displayName = "TableRowCustom";</code></pre>
+<div>
+<div>
+<div><br/>
+<div>
+<div> </div>
+</div>
+</div>
+<div><figure><img alt="" loading="lazy" src="img01.webp"/></figure>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div> </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+    </article>
+    <footer class="post-foot">
+      
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

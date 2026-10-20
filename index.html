@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Minseo Kim</title>
-  <meta name="description" content="Minseo Kim — AI security researcher and founder of Nouri. Experience, research, awards and projects." />
+  <meta name="description" content="Minseo Kim is the founder of Nouri, a full-stack developer and an AI security researcher. Experience, research, awards and projects." />
   <meta property="og:title" content="Minseo Kim" />
-  <meta property="og:description" content="Minseo Kim — AI security researcher and founder of Nouri. Experience, research, awards and projects." />
+  <meta property="og:description" content="Minseo Kim is the founder of Nouri, a full-stack developer and an AI security researcher. Experience, research, awards and projects." />
   <meta name="theme-color" content="#000000" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
@@ -17,6 +17,7 @@
     <div class="nav-inner">
       <a href="#top" class="nav-logo" id="navName"></a>
       <div class="nav-links">
+        <a href="#services" data-i18n="nav.services">Services</a>
         <a href="#projects" data-i18n="nav.projects">Projects</a>
         <a href="#experience" data-i18n="nav.experience">Experience</a>
         <a href="#awards" data-i18n="nav.awards">Awards</a>
@@ -25,6 +26,7 @@
         <a href="#certs" data-i18n="nav.certs">Certifications</a>
         <a href="#archive" data-i18n="nav.archive">Archive</a>
         <a href="#contact" data-i18n="nav.contact">Contact</a>
+        <a href="blog/" data-i18n="nav.blog">Blog</a>
       </div>
       <div class="nav-tools">
         <div class="lang-switch" role="group" aria-label="Language">
@@ -49,20 +51,28 @@
       <div class="stats reveal" id="stats"></div>
     </section>
 
-    <!-- PROJECTS -->
-    <section class="section alt" id="projects">
+    <!-- SERVICES -->
+    <section class="section alt" id="services">
       <div class="container">
-        <h2 class="section-title reveal"><span data-i18n="projects.title">Projects.</span><span class="muted" data-i18n="projects.sub"> Things I've built.</span></h2>
+        <h2 class="section-title reveal"><span data-i18n="services.title">Services.</span><span class="muted" data-i18n="services.sub"> Things I've built.</span></h2>
       </div>
-      <div class="carousel" id="projectList"></div>
+      <div class="carousel" id="serviceList"></div>
       <div class="container carousel-ctrl">
         <button class="circle-btn" data-dir="-1" aria-label="Previous">‹</button>
         <button class="circle-btn" data-dir="1" aria-label="Next">›</button>
       </div>
     </section>
 
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <div class="container">
+        <h2 class="section-title reveal"><span data-i18n="projects.title">Projects.</span><span class="muted" data-i18n="projects.sub"> Beyond the day job.</span></h2>
+        <div class="pj-grid" id="projectList"></div>
+      </div>
+    </section>
+
     <!-- EXPERIENCE -->
-    <section class="section" id="experience">
+    <section class="section alt" id="experience">
       <div class="container">
         <h2 class="section-title reveal"><span data-i18n="experience.title">Experience.</span><span class="muted" data-i18n="experience.sub"> Where I've worked.</span></h2>
         <div class="timeline" id="expList"></div>
@@ -70,7 +80,7 @@
     </section>
 
     <!-- AWARDS -->
-    <section class="section alt" id="awards">
+    <section class="section" id="awards">
       <div class="container">
         <h2 class="section-title reveal"><span data-i18n="awards.title">Awards.</span><span class="muted" data-i18n="awards.sub"> Moments of recognition.</span></h2>
         <div class="award-grid" id="awardList"></div>
@@ -78,7 +88,7 @@
     </section>
 
     <!-- EDUCATION -->
-    <section class="section" id="education">
+    <section class="section alt" id="education">
       <div class="container">
         <h2 class="section-title reveal"><span data-i18n="education.title">Education.</span><span class="muted" data-i18n="education.sub"> Where I learned.</span></h2>
         <div class="timeline" id="eduList"></div>
@@ -86,7 +96,7 @@
     </section>
 
     <!-- RESEARCH -->
-    <section class="section alt" id="research">
+    <section class="section" id="research">
       <div class="container">
         <h2 class="section-title reveal"><span data-i18n="research.title">Research.</span><span class="muted" data-i18n="research.sub"> Publications &amp; patents.</span></h2>
         <div class="research-list" id="researchList"></div>
@@ -94,7 +104,7 @@
     </section>
 
     <!-- CERTIFICATIONS -->
-    <section class="section" id="certs">
+    <section class="section alt" id="certs">
       <div class="container">
         <h2 class="section-title reveal"><span data-i18n="certs.title">Certifications.</span><span class="muted" data-i18n="certs.sub"> Programs &amp; credentials.</span></h2>
         <div class="cert-grid" id="certList"></div>
@@ -104,7 +114,7 @@
     </section>
 
     <!-- ARCHIVE -->
-    <section class="section alt" id="archive">
+    <section class="section" id="archive">
       <div class="container">
         <h2 class="section-title reveal"><span data-i18n="archive.title">Archive.</span><span class="muted" data-i18n="archive.sub"> Everything, in order.</span></h2>
         <div class="archive">

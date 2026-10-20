@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[컴퓨터구조] 1-2. Computer Organization | Minseo Kim</title>
+  <meta name="description" content="Classes of Computers PCs 개인을 위해, 가장 잘 알려진 컴퓨터 형태, 단일 유저, 낮은 가격 , third-party(제3자) software ** first: 직접 만듦, sec: 외주, third: 아무나 Servers 큰 프로그램, 여러 유저, 네트워크 통해서만" />
+  <meta property="og:title" content="[컴퓨터구조] 1-2. Computer Organization | Minseo Kim" />
+  <meta property="og:description" content="Classes of Computers PCs 개인을 위해, 가장 잘 알려진 컴퓨터 형태, 단일 유저, 낮은 가격 , third-party(제3자) software ** first: 직접 만듦, sec: 외주, third: 아무나 Servers 큰 프로그램, 여러 유저, 네트워크 통해서만" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=Computer%20S%26E/%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B5%AC%EC%A1%B0">Computer S&amp;E/컴퓨터구조</a>
+      <h1>[컴퓨터구조] 1-2. Computer Organization</h1>
+      <time datetime="2022-10-13">2022.10.13</time>
+    </header>
+    <article class="post-body">
+<h1>Classes of Computers</h1>
+<h3>PCs</h3>
+<p>개인을 위해, 가장 잘 알려진 컴퓨터 형태, 단일 유저, <b>낮은 가격</b>, third-party(제3자) software</p>
+<p>** first: 직접 만듦, sec: 외주, third: 아무나</p>
+<h3>Servers</h3>
+<p>큰 프로그램, 여러 유저, 네트워크 통해서만 접속 가능, 더 나은 연산, 저장 공간</p>
+<p>greater emphasis on <b>dependability (신뢰성, 의존성 아님)</b></p>
+<h3>Supercomputers</h3>
+<p>거대한 수의 프로세서, 메모리, 완전 비싼..., 가장 높은 성능, 하지만 컴퓨터 시장에서 작은 비중</p>
+<h3>Embedded computers</h3>
+<p>다른 장치 안에 있는 컴퓨터, 한정된 기능, 비용과 전력 줄이는 것이 가장 주요 목표</p>
+<p><b>lower tolerance for failure (실패를 덜 허용)</b></p>
+
+<h1>Range of Decimal and Binary Values</h1>
+<p>kilobyte KB 1000^1 kibibyte KiB 2^10 1024/1000 = 2%</p>
+<table>
+<tbody>
+<tr>
+<td>megabyte</td>
+<td>MB</td>
+<td>1000^2</td>
+<td>mebibyte</td>
+<td>MiB</td>
+<td>2^20</td>
+<td>5%</td>
+</tr>
+<tr>
+<td>gigabyte</td>
+<td>GB</td>
+<td>1000^3</td>
+<td>gibibyte</td>
+<td>GiB</td>
+<td>2^30</td>
+<td>7%</td>
+</tr>
+<tr>
+<td>terabyte</td>
+<td>TB</td>
+<td>1000^4</td>
+<td>tebibyte</td>
+<td>TiB</td>
+<td>2^40</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>petabyte</td>
+<td>PB</td>
+<td>1000^5</td>
+<td>pebibyte</td>
+<td>PiB</td>
+<td>2^50</td>
+<td>13%</td>
+</tr>
+</tbody>
+</table>
+<p>단위 변환 조심</p>
+<p>표 아래로 내려갈 수록, 단위가 커질 수록 Larger 차이가 커짐</p>
+
+<h1>The PostPC Era</h1>
+<h3>Personal Mobile Devices (PMDs)</h3>
+<p>ex. 스마트폰, 태블릿</p>
+<h3>Cloud computing</h3>
+<p>인터넷을 통해 서비스 제공 (아마존, 구글)</p>
+<h3>수량 추이</h3>
+<p>휴대폰 &gt;&gt; 태블릿, 스마트폰 상승세</p>
+
+<h1>Big Picture</h1>
+<p><b>Input</b>, <b>Output</b>, <b>Memory</b>, Processor (<b>Datapath</b>(산수), <b>Control</b>)</p>
+<figure><img alt="" loading="lazy" src="img01.png"/></figure>
+
+<h1>Safe Place for Data</h1>
+<h3>Volatile (Primary or Main) memory</h3>
+<p><b>휘발성</b>, 실행 중 정보를 갖고 있음</p>
+<p><b>DRAM</b> (Dynamic Random Access Memory) 에 주로 집적 회로 내에 완성형 칩으로 설치</p>
+<p>데이터가 주기적으로 업데이트 되는 <b>다이나믹</b> 구조</p>
+<p>충전 system이 없기 때문에 전하가 날아가서 전원이 꺼지면 DRAM 내의 모든 데이터는 사라짐</p>
+<p>어떤 위치로의 <b>random</b> <b>access</b> (임의 접근) 을 가능하게 함</p>
+<p>→ 전원을 방금 켰으면 DRAM에 정보가 없음 (empty 상태)</p>
+<h3>Non-Volatile (Secondary) memory</h3>
+<p><b>비휘발성,</b> 프로그램이 돌고 있지 않을 때 영구히 저장</p>
+<ul>
+<li>Flash memory</li>
+</ul>
+<p>주로 모바일에서 flash, DRAM 보다는 느리고 싼데, magnetic 보다는 빠르다</p>
+<ul>
+<li>Magnetic disk (hard disk)</li>
+</ul>
+<p>NAS에서 많이 사용 ... 아주 싸고 아주 대용량</p>
+
+<h1>Networks</h1>
+<h3>Communications between computers</h3>
+<ul>
+<li>LAN (Local area network): Ethernet</li>
+</ul>
+<p>1km, 100GB/s, 그닥 넓지 않음</p>
+<ul>
+<li>WAN (Wide area network): Internet</li>
+</ul>
+<p>광섬유</p>
+<ul>
+<li>Wireless network</li>
+</ul>
+<p>WiFi, Bluetooth</p>
+
+<h1>컴퓨터 구조 분야의 7가지 위대한 아이디어</h1>
+<ul>
+<li><s>Moore의 법칙을 고려한 설계</s></li>
+<li>추상화: 설계를 단순화하는 추상화 (abstraction)</li>
+<li>속도: 자주 생기는 일을 빠르게 (common case fast)</li>
+<li>병렬: 병렬성을 통한 성능 개선 (parallelism)</li>
+<li>파이프라이닝을 통한 성능 개선 (pipelining)</li>
+<li>예측: 예측을 통한 성능 개선 (prediction)</li>
+<li>3장 branch instruction 건너뛰기</li>
+<li>메모리 계층 기능 (hierarchy)(DRAM) 자주 사용하는 메모리 추출해서 작게 만들어 놓음, 5장</li>
+<li>최상위 계층에는 가격이 제일 비싸지만 작고 빠른 메모리, 캐시 사용</li>
+<li>신뢰성: 여유분(redundancy)을 이용한 신뢰성 개선 (dependability)</li>
+</ul>
+
+<h1>프로그램 아래</h1>
+<h3>Applications software</h3>
+<p>high-level language (C, Java) 에서 쓰인, user-friendly</p>
+<h3>Systems software</h3>
+<ul>
+<li>운영 체제 OS</li>
+</ul>
+<p>입출력 작업 처리, 보조기억장치 및 메모리 할당, task 스케줄링, 자원 공유</p>
+<p>ex) linux, ios, windows</p>
+<ul>
+<li>컴파일러</li>
+</ul>
+<p>최적화도 해줌, 하이 레벨 언어로 작성된 프로그램을 하드웨어가 실행할 수 있는 명령어로 번역</p>
+<h3>하드웨어</h3>
+<p>총 4가지, 프로세서 2개, 메모리 1개, 입출력 장치 1개</p>
+
+<h1>Levels of Program code</h1>
+<h3>하이 레벨 언어</h3>
+<p>생산성과 portability (언어 변환 쉬움)</p>
+<h3>어셈블리 언어</h3>
+<p>지시어를 표현하는 텍스트, 심볼릭 노테이션을 이진수로</p>
+<p>ex) add A, B → 1000110010100000</p>
+<h3>하드웨어</h3>
+<p>이진 자리 수 binary digits (bits), 인코딩 된 지시어와 데이터</p>
+
+<h1>Performance 이해</h1>
+<h3>알고리즘</h3>
+<p>실행되는 동작 수 결정</p>
+<h3>프로그래밍 언어, 컴파일러</h3>
+<p>각 동작에 대해 실행되는 기계 지시어 결정</p>
+<h3>프로세서</h3>
+<p>지시어가 얼마나 빨리 실행될지 결정</p>
+<h3>입출력 장치 (운영체제 포함)</h3>
+<p>입출력 동작이 얼마나 빨리 실행될지 결정</p>
+
+<h1>Performance 성장</h1>
+<h3>관련 performance</h3>
+<ul>
+<li>트랜지스터</li>
+</ul>
+<p>전기로 제어되는 온/오프 스위치</p>
+<ul>
+<li>초대규모집적회로 VLSI (Very Large Scale Integrated Circuit)</li>
+</ul>
+<p>수백만 트랜지스터를 포함한 칩</p>
+
+<p>성장 속도가 둔화되어 2~3년에 2배 증가</p>
+<p>→ 18~24개월마다 칩에 집적되는 소자의 수가 2배가 될 것이라는 Moore의 법칙이 더 이상 적용되지 않음</p>
+
+<h1>프로세서와 메모리 생산 기술</h1>
+<h3>칩 생산 공정</h3>
+<ol>
+<li>실리콘 채워서, 불순물 제거하려고 빙글빙글</li>
+<li>식혀서 단면으로 슬라이스</li>
+<li>빈 웨이퍼</li>
+<li>20~40 단계의 공정</li>
+<li>패턴 웨이퍼</li>
+<li>검사해서 불량 부분에 x 표시, 정사각형으로 자르기</li>
+<li>검사를 거친 다이들이 만들어짐, 위 예시에서 수율은 17/20, 즉 85%</li>
+<li>통과한 다이들은 패키지에 붙임</li>
+<li>납품 전에 다시 한 번 검사</li>
+</ol>
+<h3>집적 회로의 가격</h3>
+<p>다이 영역과 결함 비율은 비선형</p>
+<ul>
+<li>와퍼 가격과 영역은 고정</li>
+<li>결함 비율은 공정 과정에 의해 결정</li>
+<li>다이 영역은 아키텍쳐와 회로 설계에 의해 결정</li>
+</ul>
+<blockquote>
+<p>다이 원가 = 웨어퍼당 가격 / (웨이퍼 당 다이의 수 * 수율)</p>
+</blockquote>
+<blockquote>
+<p>웨이퍼 당 다이의 수 = 웨이퍼의 면적 / 다이의 면적</p>
+</blockquote>
+<p>완전히 같지는 않은데, 웨이퍼는 원이고 다이는 사각형이라서</p>
+<blockquote>
+<p>수율 = 1 / (1 + (면적 당 결함의 수 * 다이 면적 / 2))**2</p>
+</blockquote>
+<p>수율 = 결함 개수 빼고 / 웨이퍼 1개</p>
+<p>원가는 결함의 비율이나 다이와 웨이퍼의 크기에 따라 달라짐</p>
+<p>→ 다이 크기에 선형으로 비례하지 않음</p>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#CA</span><span>#컴퓨터구조</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

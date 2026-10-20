@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[확률/통계] 2-3. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석) | Minseo Kim</title>
+  <meta name="description" content="이전 글을 보고 오시지 않은 분들께 추천드립니다. 2023.01.11 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 1 + ppt, 연습문제 (패턴인식 - 오일석) 2023.01.13 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 2 + ppt" />
+  <meta property="og:title" content="[확률/통계] 2-3. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석) | Minseo Kim" />
+  <meta property="og:description" content="이전 글을 보고 오시지 않은 분들께 추천드립니다. 2023.01.11 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 1 + ppt, 연습문제 (패턴인식 - 오일석) 2023.01.13 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 2 + ppt" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/%EA%B8%B0%EC%B4%88%20%EA%B3%B5%EB%B6%80">머신러닝/기초 공부</a>
+      <h1>[확률/통계] 2-3. 베이지안 결정 이론 + ppt, 연습문제 (패턴인식 - 오일석)</h1>
+      <time datetime="2023-01-13">2023.01.13</time>
+    </header>
+    <article class="post-body">
+<p>이전 글을 보고 오시지 않은 분들께 추천드립니다.</p>
+<p><a href="../35/" rel="noopener" target="_blank">2023.01.11 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 1 + ppt, 연습문제 (패턴인식 - 오일석)</a></p>
+<p><a href="../37/" rel="noopener" target="_blank">2023.01.13 - [딥러닝/기초 공부] - [확률/통계] 2. 베이지안 결정 이론 2 + ppt, 연습문제 (패턴인식 - 오일석)</a></p>
+<a class="link-card" href="../37/" rel="noopener" target="_blank"><strong>[확률/통계] 2. 베이시언 결정 이론 2 + ppt, 연습문제 (패턴인식 - 오일석)</strong>이전 편을 보지 않고 오신 분들께 1편을 추천 드립니다. 2023.01.11 - [딥러닝/기초 공부] - [확률/통계] 2. 베이시언 결정 이론 1 + ppt, 연습문제 (패턴인식 - 오일석 저) 2.2 베이시언 분류기 2.1절에서는<small>imkmsh.tistory.com</small></a>
+
+
+<figure><img alt="" loading="lazy" src="img01.png"/></figure>
+
+<hr/>
+<p><b>      2.3 분별 함수      </b></p>
+
+
+<p> 분별 함수 </p>
+
+<p>M 부류 최소 오류 베이지안 분류기와 M 부류 최소 위험 베이지안 분류기는 서로 다른 수식으로 표현되어 있습니다. 하지만 이 둘을 하나의 틀에 넣어 표현할 수 있습니다. </p>
+
+<figure><img alt="" loading="lazy" src="img02.png"/></figure>
+
+
+<p>위의 식은 보다 일반적인 표현 방법으로 gi(x)에 따라 최소 오류 분류기도 되고 최소 위험 분류기도 됩니다. 최소 위험 분류기에서는 argmax로 통일하기 위해 역수를 취했습니다. gi(x)는 x를 서로 다른 부류로 분별하는데 필요한 정보를 제공합니다. 따라서 <b>분별 함수</b>라고 부릅니다.</p>
+
+
+<p> 좋은 점 </p>
+
+<p>같은 내용이지만 분별 함수를 도입하여 이렇게 표현하면 좋은 점이 있습니다.</p>
+
+<p>1. 서로 다른 여러 분류기를 일반적인 틀에 넣어 해석할 수 있습니다.</p>
+
+<figure><img alt="" loading="lazy" src="img03.png"/></figure>
+
+<p>위 그림은 베이지안 분류기를 네트워크 형태로 표현한 것입니다. 이 네트워크는 특징 벡터 x가 들어오면 이것을 M 개의 분별 함수에 입력합니다. 그리고 가장 큰 값을 갖는 것을 찾아내어 해당 부류로 분류해 주는 기능을 합니다. 4장의 신경망과 5장의 SVM도 이 틀에 맞춰 해석할 수 있습니다.</p>
+
+
+<p>분류 알고리즘을 수도 코드 형태로 아래와 같이 제시할 수 있습니다.</p>
+<figure><img alt="" loading="lazy" src="img04.png"/></figure>
+
+
+<p>2. 분류 규칙이 확률 값이나 손실 값 그 자체가 아니라 그들 사이의 상대적인 크기를 비교해 의사 결정을 합니다.</p>
+
+<p>어떤 함수f(.)가 단조 증가라면 p(x|ωi) P(ωi)대신 gi(x)=f(p(x|ωi) P(ωi)) 사용하여도 같은 결과를 얻을 수 있습니다. 이때 가장 많이 사용하는 f(.) 함수는 log입니다. log는 곱셈을 덧셈으로 바꾸어 주므로 수식 전개에 유리하고 log 취하면 값의 규모가 커져 수치 오류에 둔감한 이점이 있습니다.</p>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#딥러닝</span><span>#베이즈</span><span>#수학</span><span>#오일석</span><span>#인공지능</span><span>#통계</span><span>#패턴인식</span><span>#확률</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

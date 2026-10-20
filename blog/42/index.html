@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[Python to AI] 딥러닝의 성능을 올려준 기술들 - week 3 | Minseo Kim</title>
+  <meta name="description" content="목차 간단한 신경망 tensorflow로 구현하기 다층 퍼셉트론 활성 함수 손실 함수 Overfitting / Underfitting 옵티마이저 데이터 전처리 하이퍼 파라미터 간단한 신경망 tensorflow로 구현하기 https://colab.research.google.com/dri" />
+  <meta property="og:title" content="[Python to AI] 딥러닝의 성능을 올려준 기술들 - week 3 | Minseo Kim" />
+  <meta property="og:description" content="목차 간단한 신경망 tensorflow로 구현하기 다층 퍼셉트론 활성 함수 손실 함수 Overfitting / Underfitting 옵티마이저 데이터 전처리 하이퍼 파라미터 간단한 신경망 tensorflow로 구현하기 https://colab.research.google.com/dri" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/%EA%B8%B0%EC%B4%88%20%EA%B3%B5%EB%B6%80">머신러닝/기초 공부</a>
+      <h1>[Python to AI] 딥러닝의 성능을 올려준 기술들 - week 3</h1>
+      <time datetime="2023-05-30">2023.05.30</time>
+    </header>
+    <article class="post-body">
+<h4>목차</h4>
+<ul>
+<li>간단한 신경망 tensorflow로 구현하기</li>
+<li>다층 퍼셉트론</li>
+<li>활성 함수</li>
+<li>손실 함수</li>
+<li>Overfitting / Underfitting</li>
+<li>옵티마이저</li>
+<li>데이터 전처리</li>
+<li>하이퍼 파라미터<br/></li>
+</ul>
+
+<h3><b>  간단한 신경망 tensorflow로 구현하기  </b></h3>
+<p><a href="https://colab.research.google.com/drive/1iiI_NIEAkcBIuMu-AVKvrrlTqt7GAAfx#scrollTo=95Z-qqwyga32" rel="noopener" target="_blank">https://colab.research.google.com/drive/1iiI_NIEAkcBIuMu-AVKvrrlTqt7GAAfx#scrollTo=95Z-qqwyga32</a></p>
+<a class="link-card" href="https://colab.research.google.com/drive/1iiI_NIEAkcBIuMu-AVKvrrlTqt7GAAfx#scrollTo=95Z-qqwyga32" rel="noopener" target="_blank"><strong>Google Colaboratory Notebook</strong>Run, share, and edit Python notebooks<small>colab.research.google.com</small></a>
+<h3> </h3>
+<h3><b>  다층 퍼셉트론  </b></h3>
+<figure><img alt="" loading="lazy" src="img01.png"/></figure>
+<figure><img alt="" loading="lazy" src="img02.png"/></figure>
+
+
+<h3><b>  활성 함수  </b></h3>
+<figure><img alt="" loading="lazy" src="img03.png"/></figure>
+<figure><img alt="" loading="lazy" src="img04.png"/></figure>
+
+<h3> </h3>
+<h3><b>  손실 함수  </b></h3>
+<p><b>MSE : Mean Squared Error</b></p>
+<p>좋은 손실 함수는? 오차가 클 수록 e 값이 커야 한다.</p>
+<figure><img alt="" loading="lazy" src="img05.png"/></figure>
+
+<p>MSE는 오차가 클 수록 e 값이 크다.</p>
+<p>하지만?</p>
+<figure><img alt="" loading="lazy" src="img06.png"/></figure>
+
+<p>그래디언트가 계산되는 방식</p>
+<figure><img alt="" loading="lazy" src="img07.png"/></figure>
+<figure><img alt="" loading="lazy" src="img08.png"/></figure>
+
+<p><b>CE : Cross Entrophy</b></p>
+<figure><img alt="" loading="lazy" src="img09.png"/></figure>
+<figure><img alt="" loading="lazy" src="img10.png"/></figure>
+<figure><img alt="" loading="lazy" src="img11.png"/></figure>
+<figure><img alt="" loading="lazy" src="img12.png"/></figure>
+
+<p>손실 함수는 오차가 클 수록 e 값이 커야 한다.</p>
+<figure><img alt="" loading="lazy" src="img13.png"/></figure>
+
+<p>왜 CE는 이게 될까?</p>
+<figure><img alt="" loading="lazy" src="img14.png"/></figure>
+<figure><img alt="" loading="lazy" src="img15.png"/></figure>
+
+
+<h3><b>  Overfitting / Underfitting  </b></h3>
+<figure><img alt="" loading="lazy" src="img16.png"/></figure>
+
+<h3> </h3>
+<h3><b>  옵티마이저  </b></h3>
+<p><a href="http://www.denizyuret.com/2015/03/alec-radfords-animations-for.html" rel="noopener" target="_blank">http://www.denizyuret.com/2015/03/alec-radfords-animations-for.html</a></p>
+<a class="link-card" href="http://www.denizyuret.com/2015/03/alec-radfords-animations-for.html" rel="noopener" target="_blank"><strong>Alec Radford's animations for optimization algorithms</strong>Alec Radford has created some great animations comparing optimization algorithms SGD , Momentum , NAG , Adagrad , Adadelta , RMSprop (unfo...<small>www.denizyuret.com</small></a>
+<figure><img alt="" loading="lazy" src="img17.png"/></figure>
+
+<p><b>GD - SGD - Mini batch GD</b></p>
+<figure><img alt="" loading="lazy" src="img18.png"/></figure>
+
+<p><b>Momentum</b></p>
+<figure><img alt="" loading="lazy" src="img19.png"/></figure>
+
+
+<h3><b>  데이터 전처리  </b></h3>
+<p> balance, size, augmentation(resize, brightness, contrast, saturation, crop)</p>
+<figure><img alt="" loading="lazy" src="img20.png"/></figure>
+<figure><img alt="" loading="lazy" src="img21.png"/></figure>
+
+<h3> </h3>
+<h3><b>  하이퍼 파라미터  </b></h3>
+<p>모델의 외부에서 학습에 관련된 모델의 동작을 조정</p>
+<p>레이어의 수, 노드의 수, 학습률, epoch, 모멘텀</p>
+<figure><img alt="" loading="lazy" src="img22.png"/></figure>
+
+<p>임의 탐색이 유리하다 (Bergstra2012 실험)</p>
+<figure><img alt="" loading="lazy" src="img23.png"/></figure>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#딥러닝기초</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

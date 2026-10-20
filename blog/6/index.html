@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[딥러닝] 기초 및 꿀팁 1 | Minseo Kim</title>
+  <meta name="description" content="Lecture 1 ML: 사람이 직접 feature 생성 DL: feature도 모델이 생성 (end-to-end, input을 넣으면 무조건 ouput이 나오는) numpy: CPU 내에서만 수행 pytorch: GPU에서도 수행 torch.ones(3, 2) torch.zeros(3" />
+  <meta property="og:title" content="[딥러닝] 기초 및 꿀팁 1 | Minseo Kim" />
+  <meta property="og:description" content="Lecture 1 ML: 사람이 직접 feature 생성 DL: feature도 모델이 생성 (end-to-end, input을 넣으면 무조건 ouput이 나오는) numpy: CPU 내에서만 수행 pytorch: GPU에서도 수행 torch.ones(3, 2) torch.zeros(3" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/%EA%B8%B0%EC%B4%88%20%EA%B3%B5%EB%B6%80">머신러닝/기초 공부</a>
+      <h1>[딥러닝] 기초 및 꿀팁 1</h1>
+      <time datetime="2022-09-13">2022.09.13</time>
+    </header>
+    <article class="post-body">
+<figure><img alt="" loading="lazy" src="img01.png"/></figure>
+
+
+<p><b>Lecture 1</b></p>
+
+<p>ML: 사람이 직접 feature 생성</p>
+<p>DL: feature도 모델이 생성 (end-to-end, input을 넣으면 무조건 ouput이 나오는)</p>
+
+<p>numpy: CPU 내에서만 수행</p>
+<p>pytorch: GPU에서도 수행</p>
+
+<p>torch.ones(3, 2)</p>
+<p>torch.zeros(3, 2)</p>
+<p>torch.manual_seed =&gt; seed 고정, 동일한 실험환경 구성할 때</p>
+<p>torch.rand =&gt; 0부터 1사이</p>
+<p>torch.randn =&gt; -1부터 1사이</p>
+
+<p>y.add_(x) =&gt; y = y + x</p>
+<p>in-place가 true 이면 input 값도 변함</p>
+
+<p>numpy로 변환할 때는 CPU 내부에 있어야 함</p>
+<p>a = a.cuda()</p>
+<p>a = a.cpu()</p>
+
+<p>device = torch.device("cuda:0")</p>
+<p>a.to(device) // .cuda() =&gt; 첫 번쨰 GPU에 할당</p>
+
+<p>requires_grad = True =&gt; 미분 가능, network 내 모든 parameters는 미분 가능해야 한다</p>
+<p>미분 가능한 값을 이용한 모든 연산 결과는 미분 가능한 값으로 된다</p>
+
+<p>backward() = dx/dt</p>
+<p>print(x.grad)</p>
+<p>연산 시작점의 변수, leaf node의 gradient만 측정이 된다</p>
+
+
+<p><b>Lecture 2</b></p>
+
+<p>MSE = (x * w - y)^2 의 평균</p>
+
+
+<p><b>Lecture 3</b></p>
+
+<p>gradient = dloss/dw</p>
+<p>w = w - a(dloss/dw), (a = learning rate)</p>
+<p>** imagenet, cifar (epoch을 많이 가질 수록 lr을 줄여야 함)</p>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#딥러닝</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

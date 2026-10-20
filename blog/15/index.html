@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[Hadoop] 하둡 기본 기초 Basics 설명 2 | Minseo Kim</title>
+  <meta name="description" content="Design of HDFS - 큰 파일을 저장할 수 있다 - Streaming data access pattern : 사용자에게 끊기지 않고 데이터를 읽을 수 있게 해준다. 하드웨어에서 데이터 손실이 나더라도 그 손실을 느끼지 않게. 한 번 쓰고, 여러번 읽는다는 컨셉. - Commod" />
+  <meta property="og:title" content="[Hadoop] 하둡 기본 기초 Basics 설명 2 | Minseo Kim" />
+  <meta property="og:description" content="Design of HDFS - 큰 파일을 저장할 수 있다 - Streaming data access pattern : 사용자에게 끊기지 않고 데이터를 읽을 수 있게 해준다. 하드웨어에서 데이터 손실이 나더라도 그 손실을 느끼지 않게. 한 번 쓰고, 여러번 읽는다는 컨셉. - Commod" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=Computer%20S%26E/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0">Computer S&amp;E/빅데이터</a>
+      <h1>[Hadoop] 하둡 기본 기초 Basics 설명 2</h1>
+      <time datetime="2022-10-07">2022.10.07</time>
+    </header>
+    <article class="post-body">
+<h3>Design of HDFS</h3>
+<p>- 큰 파일을 저장할 수 있다</p>
+<p>- Streaming data access pattern</p>
+<p>: 사용자에게 끊기지 않고 데이터를 읽을 수 있게 해준다. 하드웨어에서 데이터 손실이 나더라도 그 손실을 느끼지 않게. 한 번 쓰고, 여러번 읽는다는 컨셉.</p>
+<p>- Commodity hardware</p>
+<p>: node spec이 고사양이 아닌 평범한 머신을 여러 개로 구성해서 cluster화 시킴. 슈퍼 컴퓨터 X</p>
+
+<h3>Trade Off</h3>
+<p>- Low-latency data access</p>
+<p>: 높은 데이터 처리량과 불러오는 시간 (high throughput / expense of latency)</p>
+<p>- Lots of small files</p>
+<p>: data block이 작아서 data 저장 위치와 index를 저장해야 하는 손실</p>
+<p>1MB block -&gt; 200개 / 128mb block -&gt; 2개</p>
+<p>HDFS는 큰 파일을 저장하기 위해 만들어진 것</p>
+
+<h3>Blocks</h3>
+<p>데이터를 한 번 읽을 때 불러오는 양</p>
+<p>default: 128MB</p>
+<p>Hadoop은 큰 블록으로 이루어짐: <b>seek time</b> (탐색 비용) 최소화하기 위해서</p>
+<p>**transfer rate</p>
+
+<p>block 128MB -&gt; 추상화가 잘 되어 있음</p>
+<p>블럭 크기에 맞춰서 replication을 잘 만들게 되어 있음</p>
+<p>복제: 한 하드웨어에서 문제 생겨도 백업</p>
+
+<h3>Splitting</h3>
+<p>input size를 블럭 사이즈로 잘 나눈 것</p>
+<p>data 크기</p>
+<p>block은 물리적, split은 논리적</p>
+
+<h3>Namenode, Datanodes</h3>
+<p>master: slave들이 어떤 일을 할지, 그들 간의 네트워크</p>
+<p>namenode - master, datanode - worker</p>
+<p>namenode가 저장하는 것: name space image, edit-log</p>
+<p>heart beat: datanode는 3초마다 namenode에게 살아 있다는 신호를 보냄</p>
+
+<p>HA: server를 똑같은 것 여러 개 구성, 대용량 요청이 들어오면(새해 인사) load balance 가 분산적으로 여러 서버에 처리, 고가용성(high-availability): 서버 하나가 죽어도 돌아가도록, hass? hash check를 계속 살아 있는지 체크해서 죽었으면 그쪽으로 데이터 안 보냄</p>
+
+<p>SPOF: single point of failure: 한 노드가 죽어버리면 모든 cluster가 shut down</p>
+<p>name node는 SPOF, without the namenode, the filesystem cannot be used</p>
+
+<p>secondary namenode: runs on a <b>separate physical machine</b> because it requires plenty of CPU and as much memory as the namenode to perform the merge. 데이터 용량 때문에 / 하나 다운돼도 괜찮으려고</p>
+
+<h3>Hadoop Filesystems</h3>
+<figure><img alt="" loading="lazy" src="img01.png"/></figure>
+
+
+<p>다양한 file system을 지원한다.</p>
+
+
+
+
+
+
+
+
+
+
+<h3>Replica Placement</h3>
+<p>Fault tolerance: 고장이 발생해도 얼마나 유연하게 대처할 수 있는지</p>
+<p>Hadoop은 replication 개념으로 처리하고 있다</p>
+
+<p>규칙</p>
+<p>- 신뢰성: Node (machine)이 하나 다운되더라도, 잘 백업할 수 있다</p>
+<p>- 대역폭 (write): namenode에서 쓰기 대역폭을 최대한 배려해서 썼다 -&gt; 신뢰성을 조금 포기 : map reduce 최대한 쓰지 않고 싱글 노드 안에서 알아서 썼다 -&gt; 가까운 곳에 같은 노드에 배치하면 죽을 때 같이 죽지만 가까이 불러오긴 편함</p>
+
+<figure><img alt="" loading="lazy" src="img02.png"/></figure>
+
+<p>1. 같은 싱글 노드에 배치</p>
+<p>2. 다른 rack에 배치</p>
+<p>3. 다른 rack, 다른 node에 배치</p>
+
+
+
+
+
+
+
+
+<h3>Data Locality</h3>
+<figure><img alt="" loading="lazy" src="img03.png"/></figure>
+
+
+<p>processing 개념, data 읽어오는 방향, map task</p>
+<p>어떻게 하면 data를 빨리 불러올 수 있을지</p>
+<p>블럭이 있는 자리에 map task를 놓으면 바로 불러올 수 있는데</p>
+<p>a: single machine이 busy할 때, 다른 작업 때문에 CPU가 모자랄 수 있으니까</p>
+<p>b: 같은 rack, 다른 node에 map task 할당</p>
+<p>c: 모든 rack이 busy하면 다른 rack에서</p>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#hadoop</span><span>#빅데이터</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

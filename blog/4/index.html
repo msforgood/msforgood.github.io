@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[컴퓨터구조] Performance | Minseo Kim</title>
+  <meta name="description" content="어디에 중점을 두느냐에 따라 컴퓨터 성능이 달라진다 performance = 수행 시간의 역수 CPU time에 집중한다 - Clock cycle rising edge에서 data 전송. 다음 rising edge마다 state가 변한다 period: 주기, rate: period의 역" />
+  <meta property="og:title" content="[컴퓨터구조] Performance | Minseo Kim" />
+  <meta property="og:description" content="어디에 중점을 두느냐에 따라 컴퓨터 성능이 달라진다 performance = 수행 시간의 역수 CPU time에 집중한다 - Clock cycle rising edge에서 data 전송. 다음 rising edge마다 state가 변한다 period: 주기, rate: period의 역" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=Computer%20S%26E/%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B5%AC%EC%A1%B0">Computer S&amp;E/컴퓨터구조</a>
+      <h1>[컴퓨터구조] Performance</h1>
+      <time datetime="2022-09-08">2022.09.08</time>
+    </header>
+    <article class="post-body">
+<p>어디에 중점을 두느냐에 따라 컴퓨터 성능이 달라진다</p>
+
+<p>performance = 수행 시간의 역수</p>
+<p> CPU time에 집중한다</p>
+
+<p>- Clock cycle</p>
+<p>rising edge에서 data 전송. 다음 rising edge마다 state가 변한다</p>
+<p>period: 주기, rate: period의 역수</p>
+
+<p>수행 시간 = clock cycles * cycle time = clock cycles / rate</p>
+<p>수행 시간이 가장 중요</p>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#컴퓨터구조</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>

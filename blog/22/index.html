@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[Hadoop] 논문 리뷰 MapReduce: Simplified Data Processing on Large Clusters | Minseo Kim</title>
+  <meta name="description" content="Intro 데이터의 양 증가 large-scale의 데이터들(raw data, web request logs, crawled documents, etc..) 분산된 시스템에서 데이터를 처리하고 배포하는 방법 → MapReduce = Map+ Reduce 사용자가 쉽게 사용할 수 있는 자" />
+  <meta property="og:title" content="[Hadoop] 논문 리뷰 MapReduce: Simplified Data Processing on Large Clusters | Minseo Kim" />
+  <meta property="og:description" content="Intro 데이터의 양 증가 large-scale의 데이터들(raw data, web request logs, crawled documents, etc..) 분산된 시스템에서 데이터를 처리하고 배포하는 방법 → MapReduce = Map+ Reduce 사용자가 쉽게 사용할 수 있는 자" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='black'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='-apple-system,Helvetica' font-weight='700'>M</text></svg>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <link rel="stylesheet" href="../../assets/blog.css" />
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+  <nav class="nav scrolled">
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">Minseo Kim</a>
+      <div class="nav-links">
+        <a href="../../">Home</a>
+        <a href="../../blog/">Blog</a>
+      </div>
+      <div class="nav-tools">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main class="post container">
+    <header class="post-head">
+      <a class="post-cat" href="../?c=Computer%20S%26E/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0">Computer S&amp;E/빅데이터</a>
+      <h1>[Hadoop] 논문 리뷰 MapReduce: Simplified Data Processing on Large Clusters</h1>
+      <time datetime="2022-10-26">2022.10.26</time>
+    </header>
+    <article class="post-body">
+<h1>Intro</h1>
+<p>데이터의 양 증가</p>
+<p>large-scale의 데이터들(raw data, web request logs, crawled documents, etc..)</p>
+<p>분산된 시스템에서 데이터를 처리하고 배포하는 방법</p>
+<p>→ MapReduce = Map+ Reduce</p>
+<p>사용자가 쉽게 사용할 수 있는 자동 분배 및 병렬 시스템 제공</p>
+<h1>Method</h1>
+<h3>Map</h3>
+<p>key/value 쌍의 input data를 받아 사용자가 작성한 map 함수를 따라 intermediate key/value 쌍을 생성</p>
+<p>intermediate key를 사용해 intermediate value을 그룹화하고 Reduce 함수에 전달</p>
+<h3>Reduce</h3>
+<p>intermediate key를 통해 같은 key를 가진 값들을 병합해 output file write</p>
+<h1>Implementation</h1>
+<figure><img alt="" loading="lazy" src="img01.png"/></figure>
+
+<ol>
+<li>MapReduce 라이브러리는 입력 파일을 M 조각으로 분할, 여러 시스템에서 프로그램의 많은 복사본을 만듦</li>
+<li>그 중 하나는 master, 나머지는 slave. master는 slave에 작업을 할당</li>
+<li>Map task가 할당된 worker가 해당 input split의 key/value 데이터를 map function으로 처리하고 intermediate key/value 쌍 생성해서 memory에 save</li>
+<li>저장된 쌍은 local disk에 기록되고 R 영역으로 분할됨, local disk에 저장된 쌍의 위치는 master에게 전달, master는 이 위치를 reduce worker에서 전달</li>
+<li>Reduce worker는 위치를 전달 받으면 map worker의 local disk에서 저장된 data를 읽음, 모든 intermediate data를 key를 기준으로 정려라여 동일한 키의 모든 항목을 그룹화, intermediate data 양이 너무 많아서 메모리에 맞지 않으면 외부 정렬 사용</li>
+<li>Reduce worker는 정렬된 intermediate data에 대해 반복, 각 intermediate key에 대해 key와 value를 reduce function으로 전달, reduce 함수의 출력이 최종 output 파일에 추가됨</li>
+<li>모든 map task와 reduce task가 완료되면 master가 user program을 깨움, 이때 user program의 MapReduce 호출은 user code로 돌아감</li>
+</ol>
+
+<h2>Fault Tolerance</h2>
+<h3>Worker Failure</h3>
+<p>worker는 master에게 주기적으로 (보통 3초) heartbeat를 보내는데</p>
+<p>master에서 그 신호를 받지 못하면 worker에 이슈가 생겼다고 판단, 다른 worker에게 일을 재할당</p>
+<h3>Master Failure</h3>
+<p>replication이 있다면 master가 주기적으로 master data structure의 체크포인트를 쓰기 때문에 new copy를 시작, 그러나 master가 하나 뿐일 때는 현재 operation은 중단하고 처음부터 다시 작업</p>
+<h2>Locality</h2>
+<p>GFS(Google File System)로 부터 관리되는 input data는 machine의 local disk에 저장</p>
+<p>GFS는 각 파일을 64MB로 나누고 3개의 replicaiton을 다른 machines에게</p>
+<p>MapReduce 클러스터에서 worker의 상당 부분에 대한 작업을 줄이며,</p>
+<p>대부분의 입력 데이터를 로컬에서 읽고 네트워크 대역폭을 사용하지 않음</p>
+<h2>Task Granularity</h2>
+<p>M개의 map tasks, R개의 reduce tasks로 나누고, M과 R은 대부분 worker 수보다 많음</p>
+<p>각 worker는 다양한 다른 tasks를 처리</p>
+<p>dynamic load balancing, 실패 시 처리 속도를 높임</p>
+<h2>Backup Tasks</h2>
+<p>완료 시간을 지연시키는 ‘straggler’ → 이전 게시글 참고</p>
+<p>straggler 처리 위해 MapReduce operation이 거의 완료될 시점에 backup tast 생성</p>
+<p>primary task나 backup task 중 하나가 완전히 완료되면 종료</p>
+<p>large MapReduce operation의 시간을 줄일 수 있음</p>
+<p>ex. sort program에서 backup task가 있을 때가 44% 시간 빠름</p>
+<h1>Refinements</h1>
+<ul>
+<li>Partitioning Function: Map에서 처리된 intermediate key/value 쌍들을 Reducer로 보내기 전에 같은 key를 기준으로 partition</li>
+<li>Ordering Guarantees : 보내진 partition에서 intermediate key/value 쌍들을 오름차순 정렬</li>
+<li>Combiner: Mini reducer. mapper에서 reducer로 가기 전에 미리 값을 합침으로써 연산 속도 향상</li>
+<li>Input and Output Types : 사용자는 reader interface에서 자기가 원하는 input/output types를 설정</li>
+<li>Side-effects : 한 task로 부터 여러 output file을 생성할 수 없음</li>
+<li>Skipping Bad Records : 매우 많은 연산 중 발생하는 bug에 대하여 무시 → 연산 시간 단축</li>
+<li>Local Execution : debugging, profiling, small-scale testing에서 사용할 수 있도록 local execution을 지원</li>
+<li>Status Information : 내부 HTTP 서버를 통해 completed, progressing tasks나 input/intermediate/output file의 크기, 각종 에러 정보 확인</li>
+<li>Counters : MapReduce library의 counter 객체를 사용하여 문서 내 요소의 개수를 셀 수 있고, user code로 반환</li>
+</ul>
+<h1>Performance</h1>
+<figure><img alt="" loading="lazy" src="img02.png"/></figure>
+
+<p>sort</p>
+<h2>Normal Execution</h2>
+<h3>Input</h3>
+<p>local disk → mapper</p>
+<p>grep보다 2배 느림: intermediate output을 local disk에 기록하는데 시간 절반, grep의 intermediate output은 무시할만 함</p>
+<h3>Shuffle</h3>
+<p>mapper → reducer</p>
+<p>봉우리 2개: batch 2번 (1700개로 4000개)</p>
+<h3>Output</h3>
+<p>reduce task → final output files</p>
+<p>Input, shuffle, output 순으로 빠름</p>
+<p>locality optimization, output은 복사본 포함 2개 만들기 때문</p>
+<h2>No Backup Tasks</h2>
+<p>output에서만 시간 차이</p>
+<p>fail 된 machine 5개를 처음부터 다시 돌려서 시간 44% 증가</p>
+<p>→ backup task 중요함</p>
+<h2>200 Tasks Killed</h2>
+<p>input - 실패한 것 다시 input해줘야 해서 오래 걸림</p>
+<p>shuffle: 1500개로 4000개, 봉우리 3개</p>
+<p>output: 5% 증가</p>
+<p>→ MapReduce의 fault-tolerance의 효과 좋음</p>
+<h1>Opinion</h1>
+<ul>
+<li>병렬화, fault-tolerance, 지역성 최적화, 로드 밸런싱에 대한 세부사항을 숨기기 때문에 병렬 및 분산 시스템에 대한 경험이 없는 프로그래머도 사용하기 쉬움</li>
+<li>구글의 웹 검색 서비스, 정렬, 데이터 마이닝, 머신 러닝을 위한 맵리듀스 연산으로 다양한 문제를 쉽게 표현</li>
+<li>대규모로 확장되는 MapReduce 구현</li>
+</ul>
+    </article>
+    <footer class="post-foot">
+      <div class="post-tags"><span>#hadoop</span><span>#MapReduce</span></div>
+      <a class="post-back" href="../">← 목록으로</a>
+    </footer>
+  </main>
+  <script>
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var r = document.documentElement;
+      r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>
