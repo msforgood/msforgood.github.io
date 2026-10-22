@@ -100,10 +100,12 @@ window.PROFILE = {
       desc: { en: "LLM-based web service security monitoring system", ko: "LLM 기반 웹 서비스 보안 관제 시스템" },
     },
     {
-      title: "Excellent Project",
-      org: "",
-      date: "",
+      title: { en: "SW Maestro 14th Cohort Certified Excellence", ko: "SW 마에스트로 14기 우수자 인증" },
+      org: { en: "Ministry of Science and ICT", ko: "과학기술정보통신부" },
+      date: "2024.06",
       desc: "Nouri Tale (Lovel)",
+      image: "awards/swmaestro/01.jpeg",
+      link: "awards/swmaestro/",
     },
     {
       title: { en: "Medical Big Data AI Imaging Diagnosis Hackathon", ko: "의료 빅데이터 활용 AI 영상진단 개발 해커톤" },
